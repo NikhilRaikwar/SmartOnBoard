@@ -3,7 +3,7 @@
 AI-powered codebase onboarding accelerator built for the [IBM Bob Hackathon](https://lablab.ai/ai-hackathons/ibm-bob-hackathon).
 
 [![IBM Bob](https://img.shields.io/badge/IBM%20Bob-Full%20Repo%20Context-0F62FE)](https://bob.ibm.com)
-[![watsonx.ai](https://img.shields.io/badge/watsonx.ai-Optional%20Enhancement-6929C4)](https://www.ibm.com/watsonx)
+[![watsonx.ai](https://img.shields.io/badge/watsonx.ai-Guide%20Generation-6929C4)](https://www.ibm.com/watsonx)
 [![Python](https://img.shields.io/badge/Python-Flask-111827)](https://flask.palletsprojects.com)
 [![Mermaid](https://img.shields.io/badge/Diagrams-Mermaid-C09B3A)](https://mermaid.js.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-24A148.svg)](LICENSE)
@@ -19,6 +19,7 @@ Paste a repo URL, choose a role, and SmartOnboard:
 - Clones the real repository with `git clone --depth 1`.
 - Scans real files, manifests, tests, configs, entry points, and directory structure.
 - Generates a practical onboarding guide with architecture, key files, setup, workflow, risk areas, and first steps.
+- Uses IBM watsonx.ai to format and refine the generated onboarding content.
 - Adds an interactive Q&A panel backed by the repository analysis.
 - Exports the result as HTML, Markdown, or Bob Skill-style Markdown.
 - Includes reusable IBM Bob mode and skill assets for repeatable team workflows.
@@ -38,6 +39,7 @@ IBM Bob is central to the project:
 - The repo includes a reusable Bob custom mode: `.bob/modes/onboarding-guide-generator.yaml`.
 - The repo includes a reusable Bob skill: `.bob/skills/onboarding-guide.md`.
 - The product itself is designed around Bob-style full repository context, code explanation, context mentions, and literate onboarding documentation.
+- IBM watsonx.ai formats the repository scan into polished, role-specific onboarding material.
 
 ## Demo Flow
 
@@ -110,8 +112,8 @@ Flask App
   |     |-- builds grounded onboarding markdown
   |
   |-- WatsonxEnhancer
-        |-- optionally polishes guide and Q&A
-        |-- falls back safely if credentials/API fail
+        |-- formats guide content with IBM watsonx.ai
+        |-- refines role-specific onboarding language
 ```
 
 ## Tech Stack
@@ -187,7 +189,7 @@ curl http://localhost:5000/api/health
 
 ## Environment Variables
 
-watsonx.ai is optional. Without watsonx credentials, SmartOnboard still generates a grounded guide from the real repository scan.
+Configure IBM watsonx.ai credentials before running the full SmartOnboard workflow.
 
 ```env
 WATSONX_API_KEY=your_watsonx_api_key
@@ -229,7 +231,7 @@ See `bob_sessions/README.md` for evidence organization and screenshot guidance.
 
 Based on the official IBM Bob Hackathon page, submissions are judged on application of technology, presentation, business value, and originality. SmartOnboard is built around those criteria:
 
-- **Application of Technology**: real Bob-assisted development evidence, custom Bob mode, reusable Bob skill, repo-context workflow, optional watsonx.ai enhancement.
+- **Application of Technology**: real Bob-assisted development evidence, custom Bob mode, reusable Bob skill, repo-context workflow, and IBM watsonx.ai guide generation.
 - **Presentation**: polished dashboard, exportable HTML guides, demo script, screenshots, and clear documentation.
 - **Business Value**: reduces onboarding time for new developers and repeated explanation work for senior engineers.
 - **Originality**: turns Bob's repo understanding into a reusable onboarding accelerator instead of a one-off chat prompt.

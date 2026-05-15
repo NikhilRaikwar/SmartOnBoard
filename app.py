@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, render_template, request, send_file
+from flask import Flask, abort, jsonify, render_template, request, send_file
 from flask_cors import CORS
 
 from core.analyzer_real import RepositoryAnalyzer, summarize_for_question
@@ -59,7 +59,21 @@ def dashboard():
 
 @app.route("/favicon.ico")
 def favicon():
-    return ("", 204)
+    return send_file(BASE_DIR / "docs" / "images" / "favicon.svg", mimetype="image/svg+xml")
+
+
+@app.route("/favicon.svg")
+def favicon_svg():
+    return send_file(BASE_DIR / "docs" / "images" / "favicon.svg", mimetype="image/svg+xml")
+
+
+@app.route("/assets/<path:filename>")
+def image_asset(filename: str):
+    assets_dir = (BASE_DIR / "docs" / "images").resolve()
+    target = (assets_dir / filename).resolve()
+    if not str(target).startswith(str(assets_dir)) or not target.is_file():
+        abort(404)
+    return send_file(target)
 
 
 @app.route("/analyzing")

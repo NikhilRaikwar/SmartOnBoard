@@ -13,16 +13,16 @@ The official guide requires:
 ```text
 bob_sessions/
   README.md
-  bob_task_may-15-2026_11-59-53-pm.md
+  bob_task_may-16-2026_1-08-32-am.md
   screenshots/
     task_consumption_may_15.png
 ```
 
 ### 1. SmartOnboard Development Session
 
-- **Exported Bob report**: `bob_task_may-15-2026_11-59-53-pm.md`
+- **Exported Bob report**: `bob_task_may-16-2026_1-08-32-am.md`
 - **Consumption screenshot**: `screenshots/task_consumption_may_15.png`
-- **Date**: May 15, 2026
+- **Date**: May 16, 2026
 - **What Bob helped with**:
   - Project planning and hackathon positioning
   - SmartOnboard architecture and feature breakdown

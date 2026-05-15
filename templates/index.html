@@ -3,9 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartOnboard — AI Codebase Onboarding</title>
+<title>SmartOnboard - AI Codebase Onboarding Accelerator</title>
+<meta name="description" content="SmartOnboard uses IBM Bob and watsonx.ai to analyze public GitHub repositories and generate role-specific onboarding guides, architecture summaries, setup runbooks, key file maps, and codebase Q&A.">
+<meta name="keywords" content="SmartOnboard, IBM Bob, watsonx.ai, codebase onboarding, GitHub repository analysis, developer productivity, AI documentation, architecture summary">
+<meta name="author" content="Nikhil Raikwar">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0F62FE">
+<link rel="canonical" href="{{ request.url_root.rstrip('/') }}/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartOnboard">
+<meta property="og:title" content="SmartOnboard - AI Codebase Onboarding Accelerator">
+<meta property="og:description" content="Generate IBM Bob-powered onboarding guides from real GitHub repositories in minutes, with architecture, setup, key files, workflow, and codebase Q&A.">
+<meta property="og:url" content="{{ request.url_root.rstrip('/') }}/">
+<meta property="og:image" content="{{ request.url_root.rstrip('/') }}/assets/banner.png">
+<meta property="og:image:alt" content="SmartOnboard AI-powered codebase onboarding accelerator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SmartOnboard - AI Codebase Onboarding Accelerator">
+<meta name="twitter:description" content="IBM Bob and watsonx.ai powered onboarding guides for real GitHub repositories.">
+<meta name="twitter:image" content="{{ request.url_root.rstrip('/') }}/assets/banner.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SmartOnboard",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "description": "AI-powered codebase onboarding accelerator using IBM Bob and watsonx.ai to generate role-specific guides from GitHub repositories.",
+  "creator": {
+    "@type": "Person",
+    "name": "Nikhil Raikwar"
+  },
+  "image": "{{ request.url_root.rstrip('/') }}/assets/banner.png",
+  "url": "{{ request.url_root.rstrip('/') }}/"
+}
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{

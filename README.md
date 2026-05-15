@@ -160,8 +160,6 @@ smartonboard/
   ARCHITECTURE.md
   API.md
   SETUP.md
-  DEMO_SCRIPT.md
-  SUBMISSION_CHECKLIST.md
 ```
 
 ## Quick Start
@@ -244,9 +242,6 @@ See [API.md](API.md).
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [SETUP.md](SETUP.md)
-- [DEMO_SCRIPT.md](DEMO_SCRIPT.md)
-- [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md)
-- [BOB_IDE_QUICKSTART.md](BOB_IDE_QUICKSTART.md)
 
 ## License
 

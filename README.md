@@ -16,7 +16,7 @@ SmartOnboard turns a public GitHub repository into a role-specific onboarding gu
 
 Paste a repo URL, choose a role, and SmartOnboard:
 
-- Clones the real repository with `git clone --depth 1`.
+- Fetches the real repository with `git clone --depth 1` locally or GitHub archive download on serverless runtimes.
 - Scans real files, manifests, tests, configs, entry points, and directory structure.
 - Generates a practical onboarding guide with architecture, key files, setup, workflow, risk areas, and first steps.
 - Uses IBM watsonx.ai to format and refine the generated onboarding content.
@@ -55,7 +55,7 @@ IBM Bob is central to the project:
 
 ### Real Repository Analysis
 
-SmartOnboard does not return hardcoded demo content. It clones and scans the submitted repository, then derives:
+SmartOnboard does not return hardcoded demo content. It fetches and scans the submitted repository, then derives:
 
 - primary languages
 - package managers

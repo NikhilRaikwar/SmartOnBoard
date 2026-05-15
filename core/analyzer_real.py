@@ -16,10 +16,11 @@ import re
 import shutil
 import subprocess
 import tempfile
+import zipfile
 from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 
 IGNORE_DIRS = {
@@ -138,8 +139,14 @@ class RepositoryAnalyzer:
         try:
             subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=180)
         except FileNotFoundError as exc:
-            shutil.rmtree(temp_dir, ignore_errors=True)
-            raise RuntimeError("Git is not installed or is not available on PATH.") from exc
+            try:
+                return self._download_repository_archive(temp_dir)
+            except Exception as download_exc:
+                shutil.rmtree(temp_dir, ignore_errors=True)
+                raise RuntimeError(
+                    "Git is not installed on this runtime, and the GitHub ZIP fallback failed. "
+                    f"{download_exc}"
+                ) from exc
         except subprocess.TimeoutExpired as exc:
             shutil.rmtree(temp_dir, ignore_errors=True)
             raise RuntimeError("Repository clone timed out after 180 seconds.") from exc
@@ -148,6 +155,56 @@ class RepositoryAnalyzer:
             detail = (exc.stderr or exc.stdout or "").strip()
             raise RuntimeError(f"Failed to clone repository. {detail}") from exc
         return temp_dir
+
+    def _download_repository_archive(self, temp_dir: str) -> str:
+        """Download and extract a public GitHub repo when git is unavailable."""
+        import requests
+
+        metadata_url = f"https://api.github.com/repos/{self.owner}/{self.repo_name}"
+        metadata_response = requests.get(
+            metadata_url,
+            headers={"Accept": "application/vnd.github+json", "User-Agent": "SmartOnboard"},
+            timeout=30,
+        )
+        metadata_response.raise_for_status()
+        default_branch = metadata_response.json().get("default_branch") or "main"
+
+        branch_ref = quote(default_branch, safe="/")
+        archive_url = f"https://codeload.github.com/{self.owner}/{self.repo_name}/zip/refs/heads/{branch_ref}"
+        archive_response = requests.get(
+            archive_url,
+            headers={"User-Agent": "SmartOnboard"},
+            timeout=120,
+        )
+        archive_response.raise_for_status()
+
+        archive_path = Path(temp_dir) / "repo.zip"
+        archive_path.write_bytes(archive_response.content)
+
+        with zipfile.ZipFile(archive_path) as archive:
+            self._safe_extract_zip(archive, Path(temp_dir))
+        archive_path.unlink(missing_ok=True)
+
+        extracted_roots = [path for path in Path(temp_dir).iterdir() if path.is_dir()]
+        if not extracted_roots:
+            raise RuntimeError("GitHub archive did not contain a repository directory.")
+
+        extracted_root = extracted_roots[0]
+        for item in extracted_root.iterdir():
+            shutil.move(str(item), str(Path(temp_dir) / item.name))
+        shutil.rmtree(extracted_root, ignore_errors=True)
+
+        self.repo_path = temp_dir
+        return temp_dir
+
+    @staticmethod
+    def _safe_extract_zip(archive: zipfile.ZipFile, destination: Path) -> None:
+        destination = destination.resolve()
+        for member in archive.infolist():
+            target = (destination / member.filename).resolve()
+            if not str(target).startswith(str(destination)):
+                raise RuntimeError("Unsafe path detected in GitHub archive.")
+        archive.extractall(destination)
 
     def cleanup(self) -> None:
         if self.repo_path and os.path.exists(self.repo_path):

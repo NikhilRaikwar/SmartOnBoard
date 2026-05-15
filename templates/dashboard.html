@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — SmartOnboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F0E8;
+  --cream-dark:#EDE6D6;
+  --ink:#0F0D0A;
+  --ink-60:rgba(15,13,10,.6);
+  --ink-20:rgba(15,13,10,.12);
+  --ink-8:rgba(15,13,10,.06);
+  --ibm-blue:#0F62FE;
+  --ibm-blue-bg:rgba(15,98,254,.08);
+  --ibm-cyan:#1192E8;
+  --gold:#C09B3A;
+  --gold-light:#F0D882;
+  --success:#24A148;
+  --success-bg:rgba(36,161,72,.1);
+  --warm-red:#DA1E28;
+  --purple:#6929C4;
+  --radius-sm:6px;
+  --radius-md:12px;
+  --radius-lg:20px;
+  --sidebar:280px;
+  --topbar:64px;
+}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  display:flex;
+  min-width:0;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:var(--sidebar);
+  min-width:var(--sidebar);
+  height:100vh;
+  background:var(--ink);
+  display:flex;flex-direction:column;
+  position:relative;z-index:10;
+}
+.sb-logo{
+  padding:20px 24px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:12px;
+}
+.logo-mark{
+  width:36px;height:36px;
+  border-radius:8px;
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.logo-mark::before{
+  content:'';position:absolute;
+  width:20px;height:20px;
+  border:2.5px solid var(--gold-light);
+  border-radius:50%;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.logo-mark::after{
+  content:'';position:absolute;
+  width:7px;height:7px;
+  background:var(--ibm-blue);
+  border-radius:50%;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.sb-logo-text{
+  font-family:'Syne',sans-serif;
+  font-size:16px;font-weight:700;
+  color:#fff;
+}
+.sb-logo-text span{color:var(--gold-light)}
+.sb-repo{
+  padding:16px 24px;
+  background:rgba(255,255,255,.04);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.sb-repo-label{
+  font-size:10px;letter-spacing:.8px;
+  text-transform:uppercase;color:rgba(255,255,255,.35);
+  margin-bottom:6px;
+}
+.sb-repo-name{
+  font-size:14px;font-weight:500;
+  color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.sb-role{
+  display:inline-block;margin-top:6px;
+  padding:3px 10px;
+  background:rgba(15,98,254,.25);
+  color:#93C5FD;
+  border-radius:100px;font-size:11px;font-weight:500;
+}
+.sb-nav{
+  padding:16px 12px;
+  flex:1;overflow-y:auto;
+  scrollbar-width:none;
+}
+.sb-nav::-webkit-scrollbar{display:none}
+.sb-section{
+  font-size:10px;letter-spacing:.8px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+  padding:8px 12px 6px;margin-top:8px;
+}
+.sb-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:all .15s;
+  margin-bottom:2px;
+}
+.sb-item:hover{background:rgba(255,255,255,.06)}
+.sb-item.active{background:rgba(15,98,254,.2);border:1px solid rgba(15,98,254,.3)}
+.sb-icon{
+  width:32px;height:32px;
+  border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+  flex-shrink:0;
+}
+.sb-item.active .sb-icon{background:rgba(15,98,254,.3)}
+.sb-item-text{font-size:14px;font-weight:500;color:rgba(255,255,255,.7)}
+.sb-item.active .sb-item-text{color:#fff}
+.sb-badge{
+  margin-left:auto;
+  padding:2px 8px;
+  background:rgba(255,255,255,.1);
+  color:rgba(255,255,255,.5);
+  border-radius:100px;
+  font-size:10px;
+}
+.sb-bottom{
+  padding:16px 24px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.sb-stat{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.sb-stat-label{font-size:11px;color:rgba(255,255,255,.35)}
+.sb-stat-val{font-size:13px;font-weight:500;color:rgba(255,255,255,.8)}
+.sb-stat-val.green{color:#34D399}
+.export-btn{
+  width:100%;padding:10px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius-sm);
+  color:rgba(255,255,255,.7);
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;
+  margin-top:12px;
+}
+.export-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* MAIN CONTENT */
+.main{
+  flex:1;
+  display:flex;flex-direction:column;
+  height:100vh;
+  overflow:hidden;
+  min-width:0;
+}
+
+/* TOPBAR */
+.topbar{
+  height:var(--topbar);
+  min-height:var(--topbar);
+  background:#fff;
+  border-bottom:1px solid var(--ink-20);
+  padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.topbar-left{
+  display:flex;align-items:center;gap:16px;
+}
+.topbar-title{
+  font-family:'Syne',sans-serif;
+  font-size:18px;font-weight:700;
+  color:var(--ink);
+}
+.topbar-meta{
+  font-size:13px;color:var(--ink-60);
+}
+.status-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;
+  background:var(--success-bg);
+  border-radius:100px;
+  font-size:12px;font-weight:500;
+  color:var(--success);
+}
+.status-dot{
+  width:7px;height:7px;
+  background:var(--success);
+  border-radius:50%;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-btn{
+  padding:8px 18px;
+  border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  cursor:pointer;
+  transition:all .2s;
+  display:flex;align-items:center;gap:6px;
+  text-decoration:none;
+}
+.topbar-btn-ghost{
+  background:transparent;
+  border:1.5px solid var(--ink-20);
+  color:var(--ink);
+}
+.topbar-btn-ghost:hover{border-color:var(--ink);background:var(--cream)}
+.topbar-btn-primary{
+  background:var(--ink);color:var(--cream);
+  border:1.5px solid var(--ink);
+}
+.topbar-btn-primary:hover{background:var(--ibm-blue);border-color:var(--ibm-blue)}
+
+/* BODY LAYOUT */
+.content-area{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 340px;
+  gap:0;
+  overflow:hidden;
+  min-width:0;
+}
+
+/* GUIDE PANEL */
+.guide-panel{
+  overflow-y:auto;
+  padding:32px;
+  background:var(--cream);
+  min-width:0;
+}
+.guide-panel::-webkit-scrollbar{width:6px}
+.guide-panel::-webkit-scrollbar-thumb{background:var(--ink-20);border-radius:3px}
+
+/* STATS ROW */
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:12px;margin-bottom:28px;
+}
+.stat-card{
+  background:#fff;
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-md);
+  padding:16px 20px;
+}
+.sc-label{font-size:11px;color:var(--ink-60);margin-bottom:4px;letter-spacing:.3px}
+.sc-val{
+  font-family:'Syne',sans-serif;
+  font-size:26px;font-weight:700;
+  letter-spacing:-1px;
+  line-height:1;
+}
+.sc-blue{color:var(--ibm-blue)}
+.sc-purple{color:var(--purple)}
+.sc-gold{color:var(--gold)}
+.sc-green{color:var(--success)}
+
+/* TABS */
+.tabs-bar{
+  display:flex;gap:4px;
+  background:#fff;
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-md);
+  padding:6px;
+  margin-bottom:24px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.tabs-bar::-webkit-scrollbar{display:none}
+.tab-btn{
+  flex:1;padding:10px 8px;
+  border:none;background:transparent;
+  border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--ink-60);
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.tab-btn:hover{color:var(--ink);background:var(--cream)}
+.tab-btn.active{
+  background:var(--ink);
+  color:var(--cream);
+}
+
+/* TAB CONTENT */
+.tab-pane{display:none}
+.tab-pane.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* GUIDE CONTENT */
+.guide-content{
+  background:#fff;
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-lg);
+  padding:32px;
+  min-height:400px;
+  overflow-wrap:anywhere;
+}
+.guide-content h1{
+  font-family:'Syne',sans-serif;
+  font-size:26px;font-weight:700;
+  letter-spacing:-1px;
+  color:var(--ink);margin-bottom:20px;
+}
+.guide-content h2{
+  font-family:'Syne',sans-serif;
+  font-size:20px;font-weight:700;
+  color:var(--ink);margin:28px 0 12px;
+  letter-spacing:-.5px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--ink-20);
+}
+.guide-content h3{
+  font-size:16px;font-weight:500;
+  color:var(--ibm-blue);
+  margin:20px 0 8px;
+}
+.guide-content p{
+  font-size:15px;line-height:1.7;
+  color:var(--ink);margin-bottom:12px;
+}
+.guide-content ul,.guide-content ol{
+  margin:8px 0 16px 24px;
+}
+.guide-content li{
+  font-size:15px;line-height:1.6;
+  color:var(--ink);margin-bottom:6px;
+}
+.guide-content code{
+  font-family:'DM Mono',monospace;
+  font-size:13px;
+  background:var(--cream);
+  border:1px solid var(--ink-20);
+  padding:2px 6px;border-radius:4px;
+  color:var(--ibm-blue);
+}
+.guide-content pre{
+  background:var(--ink);
+  border-radius:var(--radius-md);
+  padding:20px 24px;
+  overflow-x:auto;
+  margin:16px 0;
+  border-left:3px solid var(--ibm-blue);
+}
+.guide-content pre code{
+  font-family:'DM Mono',monospace;
+  font-size:13px;line-height:1.8;
+  background:none;border:none;
+  color:#E2E8F0;padding:0;
+}
+.guide-content table{
+  width:100%;border-collapse:collapse;
+  margin:16px 0;font-size:14px;
+  display:block;
+  overflow-x:auto;
+}
+.guide-content th{
+  background:var(--cream);
+  padding:10px 14px;text-align:left;
+  font-weight:500;color:var(--ink-60);
+  border:1px solid var(--ink-20);
+  font-size:12px;letter-spacing:.3px;
+  text-transform:uppercase;
+}
+.guide-content td{
+  padding:10px 14px;
+  border:1px solid var(--ink-20);
+  color:var(--ink);
+}
+.guide-content tr:hover td{background:var(--cream)}
+.guide-content .mermaid{
+  background:var(--cream);
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-md);
+  padding:20px;
+  margin:16px 0;
+  overflow-x:auto;
+  text-align:center;
+}
+
+/* SKELETON */
+.skeleton{
+  background:linear-gradient(90deg,var(--cream-dark) 25%,var(--cream) 50%,var(--cream-dark) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:4px;
+  height:16px;margin-bottom:10px;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skeleton.wide{width:80%}
+.skeleton.mid{width:60%}
+.skeleton.short{width:40%}
+.skeleton.h2{height:24px;margin-bottom:20px}
+.skeleton.h3{height:18px}
+.skeleton.para{height:12px}
+
+/* LOADING STATE */
+.guide-loading{padding:8px}
+.loading-note{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;
+  background:var(--ibm-blue-bg);
+  border-radius:var(--radius-md);
+  margin-bottom:24px;
+  border:1px solid rgba(15,98,254,.15);
+}
+.loading-spinner{
+  width:20px;height:20px;
+  border:2px solid rgba(15,98,254,.2);
+  border-top-color:var(--ibm-blue);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  flex-shrink:0;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-note-text{font-size:14px;color:var(--ibm-blue)}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;padding:60px 40px;
+  color:var(--ink-60);
+}
+.empty-icon{font-size:48px;margin-bottom:16px}
+.empty-title{
+  font-family:'Syne',sans-serif;
+  font-size:20px;font-weight:700;
+  color:var(--ink);margin-bottom:8px;
+}
+.empty-desc{font-size:15px;line-height:1.6}
+
+/* CHAT PANEL */
+.chat-panel{
+  background:#fff;
+  border-left:1px solid var(--ink-20);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  min-width:0;
+}
+.chat-header{
+  padding:20px 24px 16px;
+  border-bottom:1px solid var(--ink-20);
+}
+.chat-title{
+  font-family:'Syne',sans-serif;
+  font-size:16px;font-weight:700;
+  color:var(--ink);margin-bottom:4px;
+}
+.chat-sub{font-size:12px;color:var(--ink-60)}
+.chat-msgs{
+  flex:1;overflow-y:auto;
+  min-height:0;
+  padding:16px 20px;
+  display:flex;flex-direction:column;
+  gap:12px;
+}
+.chat-msgs::-webkit-scrollbar{width:4px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--ink-20);border-radius:2px}
+.msg{
+  max-width:88%;
+  padding:12px 16px;
+  border-radius:var(--radius-md);
+  font-size:14px;line-height:1.55;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  min-width:0;
+}
+.msg p,.msg li,.msg code,.msg pre{overflow-wrap:anywhere;word-break:break-word;max-width:100%}
+.msg ul,.msg ol{padding-left:18px;margin:8px 0}
+.msg pre{white-space:pre-wrap}
+.msg-bot{
+  background:var(--cream);
+  border:1px solid var(--ink-20);
+  align-self:flex-start;
+  color:var(--ink);
+}
+.msg-user{
+  background:var(--ink);
+  color:#fff;
+  align-self:flex-end;
+  border-radius:var(--radius-md) var(--radius-md) 4px var(--radius-md);
+}
+.msg-sender{
+  font-size:11px;font-weight:500;
+  margin-bottom:4px;color:var(--ink-60);
+  display:block;
+}
+.msg-bot .msg-sender{color:var(--ibm-blue)}
+.quick-qs{
+  padding:12px 20px;
+  border-top:1px solid var(--ink-20);
+}
+.quick-label{font-size:11px;color:var(--ink-60);margin-bottom:8px}
+.quick-grid{display:flex;flex-direction:column;gap:6px}
+.quick-chip{
+  padding:8px 12px;
+  background:var(--cream);
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  font-size:13px;color:var(--ink);
+  cursor:pointer;
+  transition:all .15s;
+  text-align:left;
+}
+.quick-chip:hover{background:var(--cream-dark);border-color:var(--ink)}
+.chat-input-area{
+  padding:16px 20px;
+  border-top:1px solid var(--ink-20);
+  display:flex;gap:10px;
+  align-items:flex-end;
+}
+.chat-input{
+  flex:1;
+  min-width:0;
+  padding:10px 14px;
+  border:1.5px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;color:var(--ink);
+  background:var(--cream);
+  outline:none;resize:none;
+  transition:border-color .2s;
+  line-height:1.4;
+}
+.chat-input:focus{border-color:var(--ibm-blue)}
+.chat-send{
+  width:40px;height:40px;
+  background:var(--ink);
+  border:none;border-radius:var(--radius-sm);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.chat-send:hover{background:var(--ibm-blue)}
+.chat-send svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+
+/* EXPORT MODAL */
+.modal-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(15,13,10,.6);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:200;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:#fff;
+  border-radius:var(--radius-lg);
+  padding:36px;
+  width:440px;
+  max-width:95vw;
+}
+.modal-title{
+  font-family:'Syne',sans-serif;
+  font-size:22px;font-weight:700;
+  margin-bottom:8px;
+}
+.modal-sub{font-size:14px;color:var(--ink-60);margin-bottom:28px}
+.export-options{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.export-option{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 20px;
+  border:1.5px solid var(--ink-20);
+  border-radius:var(--radius-md);
+  cursor:pointer;transition:all .2s;
+}
+.export-option:hover{border-color:var(--ibm-blue);background:var(--ibm-blue-bg)}
+.eo-icon{
+  width:40px;height:40px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.eo-blue{background:var(--ibm-blue-bg)}
+.eo-gold{background:rgba(192,155,58,.12)}
+.eo-ink{background:var(--ink-8)}
+.eo-text .eo-title{font-size:15px;font-weight:500;color:var(--ink)}
+.eo-text .eo-desc{font-size:12px;color:var(--ink-60)}
+.modal-close{
+  width:100%;padding:12px;
+  background:transparent;border:1.5px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;color:var(--ink-60);cursor:pointer;
+  transition:all .2s;
+}
+.modal-close:hover{border-color:var(--ink);color:var(--ink)}
+
+@media(max-width:1180px){
+  .content-area{grid-template-columns:1fr}
+  .chat-panel{
+    border-left:none;
+    border-top:1px solid var(--ink-20);
+    min-height:460px;
+  }
+}
+
+@media(max-width:900px){
+  html,body{height:auto;min-height:100%;overflow:auto}
+  body{display:block}
+  .sidebar{
+    width:100%;
+    min-width:0;
+    height:auto;
+  }
+  .sb-logo{padding:16px 20px}
+  .sb-repo{padding:14px 20px}
+  .sb-nav{
+    display:flex;
+    overflow-x:auto;
+    padding:10px 12px;
+    gap:8px;
+  }
+  .sb-section{display:none}
+  .sb-item{
+    flex:0 0 auto;
+    margin:0;
+    padding:8px 10px;
+  }
+  .sb-icon{width:28px;height:28px}
+  .sb-bottom{display:none}
+  .main{height:auto;min-height:0}
+  .topbar{
+    height:auto;
+    min-height:0;
+    padding:16px 20px;
+    gap:14px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+  .topbar-left{flex-wrap:wrap}
+  .topbar-right{width:100%;justify-content:flex-start;flex-wrap:wrap}
+  .content-area{overflow:visible}
+  .guide-panel{overflow:visible;padding:20px}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .tabs-bar{padding:5px}
+  .tab-btn{flex:0 0 auto;padding:9px 12px}
+  .guide-content{padding:22px;border-radius:var(--radius-md)}
+  .chat-panel{min-height:520px}
+}
+
+@media(max-width:560px){
+  .sb-item-text{display:none}
+  .sb-badge{display:none}
+  .topbar-title{font-size:16px}
+  .status-pill{font-size:11px}
+  .topbar-btn{padding:8px 12px}
+  .guide-panel{padding:14px}
+  .stats-row{grid-template-columns:1fr}
+  .stat-card{padding:14px 16px}
+  .guide-content{padding:18px}
+  .guide-content h2{font-size:18px}
+  .guide-content table{font-size:13px}
+  .chat-header,.chat-msgs,.quick-qs,.chat-input-area{padding-left:14px;padding-right:14px}
+  .msg{max-width:100%;font-size:13px}
+  .quick-grid{gap:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- Export Modal -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal">
+    <div class="modal-title">Export Guide</div>
+    <div class="modal-sub">Choose your export format</div>
+    <div class="export-options">
+      <div class="export-option" onclick="doExport('html')">
+        <div class="eo-icon eo-blue">🌐</div>
+        <div class="eo-text">
+          <div class="eo-title">HTML Document</div>
+          <div class="eo-desc">Styled, shareable web page with diagrams</div>
+        </div>
+      </div>
+      <div class="export-option" onclick="doExport('markdown')">
+        <div class="eo-icon eo-ink">📝</div>
+        <div class="eo-text">
+          <div class="eo-title">Markdown</div>
+          <div class="eo-desc">Raw .md file for wikis and GitHub</div>
+        </div>
+      </div>
+      <div class="export-option" onclick="doExport('skill')">
+        <div class="eo-icon eo-gold">🤖</div>
+        <div class="eo-text">
+          <div class="eo-title">Bob Skill Format</div>
+          <div class="eo-desc">Reusable skill for IBM Bob IDE workflows</div>
+        </div>
+      </div>
+    </div>
+    <button class="modal-close" onclick="closeExport()">Cancel</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark"></div>
+    <span class="sb-logo-text">Smart<span>Onboard</span></span>
+  </div>
+  <div class="sb-repo">
+    <div class="sb-repo-label">Repository</div>
+    <div class="sb-repo-name" id="sbRepoName">Loading...</div>
+    <span class="sb-role" id="sbRole">Engineer</span>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Guide</div>
+    <div class="sb-item active" onclick="switchTab('overview',this)">
+      <div class="sb-icon">📊</div>
+      <span class="sb-item-text">Overview</span>
+    </div>
+    <div class="sb-item" onclick="switchTab('architecture',this)">
+      <div class="sb-icon">🏗️</div>
+      <span class="sb-item-text">Architecture</span>
+    </div>
+    <div class="sb-item" onclick="switchTab('setup',this)">
+      <div class="sb-icon">⚙️</div>
+      <span class="sb-item-text">Setup & Install</span>
+    </div>
+    <div class="sb-item" onclick="switchTab('keyfiles',this)">
+      <div class="sb-icon">📁</div>
+      <span class="sb-item-text">Key Files</span>
+      <span class="sb-badge" id="sbFilesCount">0</span>
+    </div>
+    <div class="sb-item" onclick="switchTab('workflow',this)">
+      <div class="sb-icon">🔄</div>
+      <span class="sb-item-text">Workflow</span>
+    </div>
+    <div class="sb-item" onclick="switchTab('firststeps',this)">
+      <div class="sb-icon">🚀</div>
+      <span class="sb-item-text">First Steps</span>
+    </div>
+
+    <div class="sb-section">Bob Integration</div>
+    <div class="sb-item" onclick="switchTab('bobmode',this)">
+      <div class="sb-icon">🤖</div>
+      <span class="sb-item-text">Bob Mode & Skill</span>
+    </div>
+  </nav>
+  <div class="sb-bottom">
+    <div class="sb-stat">
+      <span class="sb-stat-label">Files analyzed</span>
+      <span class="sb-stat-val" id="sbFilesTotal">–</span>
+    </div>
+    <div class="sb-stat">
+      <span class="sb-stat-label">Time saved</span>
+      <span class="sb-stat-val green">95%</span>
+    </div>
+    <div class="sb-stat">
+      <span class="sb-stat-label">Analysis</span>
+      <span class="sb-stat-val green" id="sbAnalysisTime">–</span>
+    </div>
+    <button class="export-btn" onclick="openExport()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export Guide
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="topbar-title" id="topbarTitle">Onboarding Guide</div>
+        <div class="topbar-meta" id="topbarMeta">Generated just now</div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        watsonx.ai enhanced
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a href="/" class="topbar-btn topbar-btn-ghost">← New Analysis</a>
+      <button class="topbar-btn topbar-btn-primary" onclick="openExport()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area">
+    <!-- GUIDE PANEL -->
+    <div class="guide-panel">
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="sc-label">Files Analyzed</div>
+          <div class="sc-val sc-blue" id="statFiles">–</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Lines of Code</div>
+          <div class="sc-val sc-purple" id="statLines">–</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Key Components</div>
+          <div class="sc-val sc-gold" id="statComponents">–</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Time Saved</div>
+          <div class="sc-val sc-green">95%</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs-bar">
+        <button class="tab-btn active" id="tabbtn-overview" onclick="switchTab('overview',this)">Overview</button>
+        <button class="tab-btn" id="tabbtn-architecture" onclick="switchTab('architecture',this)">Architecture</button>
+        <button class="tab-btn" id="tabbtn-setup" onclick="switchTab('setup',this)">Setup</button>
+        <button class="tab-btn" id="tabbtn-keyfiles" onclick="switchTab('keyfiles',this)">Key Files</button>
+        <button class="tab-btn" id="tabbtn-workflow" onclick="switchTab('workflow',this)">Workflow</button>
+        <button class="tab-btn" id="tabbtn-firststeps" onclick="switchTab('firststeps',this)">First Steps</button>
+        <button class="tab-btn" id="tabbtn-bobmode" onclick="switchTab('bobmode',this)">Bob Mode</button>
+      </div>
+
+      <!-- Tab Panes -->
+      <div id="pane-overview" class="tab-pane active">
+        <div class="guide-content" id="content-overview">
+          <div class="guide-loading">
+            <div class="loading-note">
+              <div class="loading-spinner"></div>
+              <span class="loading-note-text">Loading analysis data...</span>
+            </div>
+            <div class="skeleton h2"></div>
+            <div class="skeleton wide"></div>
+            <div class="skeleton mid"></div>
+            <div class="skeleton short" style="margin-bottom:24px"></div>
+            <div class="skeleton h3"></div>
+            <div class="skeleton para"></div>
+            <div class="skeleton para wide"></div>
+            <div class="skeleton para mid"></div>
+          </div>
+        </div>
+      </div>
+      <div id="pane-architecture" class="tab-pane">
+        <div class="guide-content" id="content-architecture"><div class="empty-state"><div class="empty-icon">🏗️</div><div class="empty-title">Loading...</div></div></div>
+      </div>
+      <div id="pane-setup" class="tab-pane">
+        <div class="guide-content" id="content-setup"><div class="empty-state"><div class="empty-icon">⚙️</div><div class="empty-title">Loading...</div></div></div>
+      </div>
+      <div id="pane-keyfiles" class="tab-pane">
+        <div class="guide-content" id="content-keyfiles"><div class="empty-state"><div class="empty-icon">📁</div><div class="empty-title">Loading...</div></div></div>
+      </div>
+      <div id="pane-workflow" class="tab-pane">
+        <div class="guide-content" id="content-workflow"><div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-title">Loading...</div></div></div>
+      </div>
+      <div id="pane-firststeps" class="tab-pane">
+        <div class="guide-content" id="content-firststeps"><div class="empty-state"><div class="empty-icon">🚀</div><div class="empty-title">Loading...</div></div></div>
+      </div>
+      <div id="pane-bobmode" class="tab-pane">
+        <div class="guide-content" id="content-bobmode"><div class="empty-state"><div class="empty-icon">🤖</div><div class="empty-title">Loading...</div></div></div>
+      </div>
+    </div>
+
+    <!-- CHAT PANEL -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-title">Ask the Codebase</div>
+        <div class="chat-sub">Context-aware answers from real analysis</div>
+      </div>
+
+      <div class="chat-msgs" id="chatMsgs">
+        <div class="msg msg-bot">
+          <span class="msg-sender">SmartOnboard AI</span>
+          I've analyzed this repository. Ask me anything about the architecture, setup, key files, or how to get started!
+        </div>
+      </div>
+
+      <div class="quick-qs">
+        <div class="quick-label">Quick questions</div>
+        <div class="quick-grid">
+          <button class="quick-chip" onclick="sendQ('What should I read first?')">What should I read first?</button>
+          <button class="quick-chip" onclick="sendQ('How do I run the tests?')">How do I run the tests?</button>
+          <button class="quick-chip" onclick="sendQ('What is the tech stack?')">What is the tech stack?</button>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <textarea
+          id="chatInput"
+          class="chat-input"
+          placeholder="Ask about the codebase..."
+          rows="2"
+          onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
+        ></textarea>
+        <button class="chat-send" onclick="sendMsg()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+mermaid.initialize({startOnLoad:false,theme:'neutral',securityLevel:'loose'});
+marked.setOptions({breaks:true,gfm:true});
+
+let analysisData=null;
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const raw=sessionStorage.getItem('analysisData');
+  if(raw){
+    try{
+      analysisData=JSON.parse(raw);
+      render(analysisData);
+    }catch(e){showNoData()}
+  }else{
+    showNoData();
+  }
+});
+
+function showNoData(){
+  document.getElementById('content-overview').innerHTML=`
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">No analysis data found</div>
+      <div class="empty-desc">Go back to the home page and analyze a GitHub repository first.</div>
+      <br><a href="/" style="color:var(--ibm-blue);font-weight:500">← Analyze a Repository</a>
+    </div>`;
+}
+
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function joinCode(arr,fallback='Not detected'){
+  const vals=(arr||[]).filter(Boolean);
+  return vals.length ? vals.map(v=>`<code>${esc(v)}</code>`).join(', ') : fallback;
+}
+
+function joinList(arr,fallback='Not detected'){
+  const vals=(arr||[]).filter(Boolean);
+  return vals.length ? esc(vals.join(', ')) : fallback;
+}
+
+function render(data){
+  const analysis=data.analysis||{};
+  const structure=data.structure||analysis.structure||{};
+  const tech=data.tech_stack||analysis.tech_stack||{};
+  const keyFiles=data.key_files||analysis.key_files||[];
+  const setup=analysis.setup||{};
+  const risks=analysis.risks||[];
+  const readme=analysis.readme||'';
+  const repoName=(data.repo_name||data.repo_url||'').split('/').pop()||'Repository';
+  const role=data.role||'engineer';
+
+  // Sidebar & topbar
+  document.getElementById('sbRepoName').textContent=repoName;
+  document.getElementById('sbRole').textContent=role.charAt(0).toUpperCase()+role.slice(1);
+  document.getElementById('topbarTitle').textContent=repoName+' — Onboarding Guide';
+  document.getElementById('sbFilesCount').textContent=keyFiles.length;
+  document.getElementById('sbFilesTotal').textContent=structure.total_files||'–';
+  document.getElementById('sbAnalysisTime').textContent=data.analysis_time||'done';
+
+  // Stats
+  document.getElementById('statFiles').textContent=(structure.total_files||0).toLocaleString();
+  document.getElementById('statLines').textContent=(structure.total_lines||0).toLocaleString();
+  document.getElementById('statComponents').textContent=keyFiles.length||0;
+
+  const dirs=structure.directories||structure.main_directories||[];
+  const entries=structure.entry_points||[];
+  const configs=structure.config_files||[];
+  const tests=structure.test_files||[];
+
+  // OVERVIEW
+  const readmeSummary=extractReadme(readme);
+  document.getElementById('content-overview').innerHTML=`
+    <h2>Project Overview</h2>
+    <p>${readmeSummary?esc(readmeSummary):'Analysis complete. See sections below for full details about this repository.'}</p>
+    <h3>Repository Facts</h3>
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>Repository</td><td><code>${esc(data.repo_url||'')}</code></td></tr>
+      <tr><td>Role</td><td><code>${esc(role)}</code></td></tr>
+      <tr><td>Files scanned</td><td>${esc(structure.total_files||0)}</td></tr>
+      <tr><td>Lines scanned</td><td>${(structure.total_lines||0).toLocaleString()}</td></tr>
+      <tr><td>Languages</td><td>${joinList(tech.languages)}</td></tr>
+      <tr><td>Frameworks</td><td>${joinList(tech.frameworks)}</td></tr>
+      <tr><td>Package managers</td><td>${joinList(tech.package_managers)}</td></tr>
+      <tr><td>Build tools</td><td>${joinList(tech.build_tools)}</td></tr>
+      <tr><td>Testing</td><td>${joinList(tech.testing)}</td></tr>
+    </table>
+    <h3>Entry Points</h3>
+    <p>${joinCode(entries,'No standard entry points detected')}</p>
+    <h3>Main Directories</h3>
+    <p>${joinCode(dirs,'No directories detected')}</p>
+  `;
+
+  // ARCHITECTURE
+  const nodeLines=dirs.slice(0,8).map((d,i)=>`    App --> D${i}[${d.replace(/[\[\]"]/g,'')}]`).join('\n')||'    App --> Files[Repository files]';
+  document.getElementById('content-architecture').innerHTML=`
+    <h2>Architecture Summary</h2>
+    <p>The repository is organized around ${joinCode(dirs,'the following areas')}. ${entries.length?'Entry points detected: '+joinCode(entries)+'.':'No standard entry points detected automatically.'}</p>
+    <div class="mermaid" id="archDiagram">graph TD
+    Repo[${esc(repoName)}] --> App[Application Surface]
+${nodeLines}
+    App --> Config[Configuration]
+    Config --> Runtime[Runtime / CI]</div>
+    <h3>Configuration Files</h3>
+    <p>${joinCode(configs,'No configuration files detected')}</p>
+    <h3>How to Navigate</h3>
+    <ol>
+      <li>Start with the README and any detected entry point</li>
+      <li>Follow imports from the entry point into source directories</li>
+      <li>Read configuration files to understand environment variables and dependencies</li>
+      <li>Use test files as executable documentation before editing code</li>
+    </ol>
+  `;
+  setTimeout(()=>{
+    mermaid.init(undefined,[document.getElementById('archDiagram')]);
+  },100);
+
+  // SETUP
+  const cmds=setup.commands||[];
+  const scripts=setup.scripts||[];
+  const cmdBlock=cmds.length?cmds.join('\n'):'# No setup commands detected';
+  const scriptList=scripts.length?`<ul>${scripts.map(s=>`<li><code>${esc(s)}</code></li>`).join('')}</ul>`:'<p>No package scripts detected.</p>';
+  document.getElementById('content-setup').innerHTML=`
+    <h2>Setup & Installation</h2>
+    <p>Run these commands from a clean terminal to get this project running locally.</p>
+    <pre><code>${esc(cmdBlock)}</code></pre>
+    <h3>Detected Scripts</h3>
+    ${scriptList}
+    <h3>Environment Notes</h3>
+    <ul>
+      <li>Check <code>.env.example</code> and README before running</li>
+      <li>Never commit <code>.env</code> or API keys to the repository</li>
+      <li>Use local or mocked services for initial development</li>
+      <li>Run tests before making any code changes to verify baseline</li>
+    </ul>
+  `;
+
+  // KEY FILES
+  const rows=keyFiles.slice(0,15).map(f=>`
+    <tr>
+      <td><code>${esc(f.path||'')}</code></td>
+      <td>${esc(f.purpose||'Important file')}</td>
+      <td>${esc(f.importance||'medium')}</td>
+      <td>${(f.lines||0).toLocaleString()}</td>
+    </tr>`).join('');
+  document.getElementById('content-keyfiles').innerHTML=`
+    <h2>Key File Map</h2>
+    <p>These are the highest-signal files to read first when onboarding.</p>
+    ${keyFiles.length?`
+    <table>
+      <tr><th>File</th><th>Purpose</th><th>Priority</th><th>Lines</th></tr>
+      ${rows}
+    </table>`:'<p>No key files were identified automatically.</p>'}
+    <h3>Reading Order</h3>
+    <ol>
+      ${keyFiles.slice(0,6).map(f=>`<li><code>${esc(f.path)}</code> — ${esc(f.purpose||'')}</li>`).join('')||'<li>Start with README, then source entry points</li>'}
+    </ol>
+  `;
+
+  // WORKFLOW
+  const riskList=risks.length?`<ul>${risks.map(r=>`<li>${esc(r)}</li>`).join('')}</ul>`:'<p>No major risks detected in this scan.</p>';
+  const testList=tests.length?`<ul>${tests.slice(0,10).map(t=>`<li><code>${esc(t)}</code></li>`).join('')}</ul>`:'<p>No test files detected in the scanned file set.</p>';
+  document.getElementById('content-workflow').innerHTML=`
+    <h2>Development Workflow</h2>
+    <h3>Test Files</h3>
+    ${testList}
+    <h3>Risk Areas</h3>
+    ${riskList}
+    <h3>Daily Development Loop</h3>
+    <ol>
+      <li>Pull latest changes from the main branch</li>
+      <li>Install or update dependencies if package files changed</li>
+      <li>Start the development server or run the application</li>
+      <li>Run the test suite before making changes</li>
+      <li>Keep changes small and focused for the first few weeks</li>
+      <li>Run tests again before opening a pull request</li>
+    </ol>
+  `;
+
+  // FIRST STEPS
+  const readOrder=keyFiles.slice(0,6).map((f,i)=>`<li><strong>${i+1}.</strong> <code>${esc(f.path)}</code> — ${esc(f.purpose||'')}</li>`).join('');
+  document.getElementById('content-firststeps').innerHTML=`
+    <h2>Start Here Guide</h2>
+    <h3>First 30 Minutes — Read These Files</h3>
+    <ol>${readOrder||'<li>README.md, then configuration files, then source directories</li>'}</ol>
+    <h3>First Half Day</h3>
+    <ol>
+      <li>Run the setup commands from the Setup tab</li>
+      <li>Open ${entries.length?joinCode(entries.slice(0,2)):'the main entry point'} and trace one request or execution path</li>
+      <li>Run the test suite or the closest available verification command</li>
+      <li>Make a tiny documentation or test change to validate the workflow end-to-end</li>
+    </ol>
+    <h3>First Contribution Ideas</h3>
+    <ul>
+      <li>Improve README setup clarity or fix a typo</li>
+      <li>Add or update tests around a small utility module</li>
+      <li>Document an unclear configuration option in <code>.env.example</code></li>
+      <li>Fix a small issue in a low-risk utility function or route</li>
+    </ul>
+    <h3>Good Questions to Ask Your Team</h3>
+    <ul>
+      <li>What's the most common gotcha for new developers on this project?</li>
+      <li>Which files are most likely to change in the next sprint?</li>
+      <li>Are there any undocumented environment setup requirements?</li>
+    </ul>
+  `;
+
+  // BOB MODE
+  document.getElementById('content-bobmode').innerHTML=`
+    <h2>IBM Bob Integration</h2>
+    <p>SmartOnboard includes reusable IBM Bob assets that make this workflow repeatable for any team.</p>
+    <h3>Custom Mode: Onboarding Guide Generator</h3>
+    <p>File: <code>.bob/modes/onboarding-guide-generator.yaml</code></p>
+    <p>This custom mode gives Bob IDE a specialized persona for analyzing codebases. When activated, Bob uses full repository context, context mentions like <code>@file</code> and <code>@folder</code>, and literate coding to generate comprehensive guides.</p>
+    <pre><code>@mode onboarding-guide-generator
+
+Analyze this repository and create an onboarding
+guide for a new software engineer.
+
+Include: tech stack, architecture diagram,
+key files, setup instructions, first PR guide.</code></pre>
+    <h3>Bob Skill: Onboarding Guide</h3>
+    <p>File: <code>.bob/skills/onboarding-guide.md</code></p>
+    <p>A reusable instruction set that teams can import into Bob IDE. Makes the onboarding workflow standardized and repeatable across all projects.</p>
+    <h3>How Bob Was Used to Build This</h3>
+    <ul>
+      <li>Architecture planning and component design</li>
+      <li>Flask backend API implementation</li>
+      <li>watsonx.ai integration and debugging</li>
+      <li>Content generator and analyzer modules</li>
+      <li>Frontend template design and JavaScript logic</li>
+    </ul>
+    <p>See <code>bob_sessions/</code> for exported Bob task reports with consumption summaries.</p>
+  `;
+}
+
+function extractReadme(readme){
+  if(!readme)return '';
+  for(const block of readme.split(/\n\s*\n/)){
+    const lines=block.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('#')&&!l.startsWith('!['&&!l.includes('shields.io')));
+    const text=lines.join(' ').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/[#*_>`]/g,'').replace(/\s+/g,' ').trim();
+    if(text.length>80)return text.slice(0,500);
+  }
+  return '';
+}
+
+let activeTab='overview';
+function switchTab(tab,srcEl){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  const pane=document.getElementById('pane-'+tab);
+  if(pane)pane.classList.add('active');
+  const btn=document.getElementById('tabbtn-'+tab);
+  if(btn)btn.classList.add('active');
+  if(srcEl)srcEl.classList.add('active');
+  activeTab=tab;
+}
+
+// CHAT
+async function sendMsg(){
+  const input=document.getElementById('chatInput');
+  const q=input.value.trim();
+  if(!q||!analysisData)return;
+  input.value='';
+  addMsg(q,'user');
+  const typingId=addMsg('Thinking...','bot');
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        repo_url:analysisData.repo_url,
+        question:q,
+        context:analysisData,
+        role:analysisData.role
+      })
+    });
+    const data=await res.json();
+    document.getElementById(typingId).remove();
+    addMsg(data.status==='success'?data.answer:'Sorry, something went wrong. Please try again.','bot');
+  }catch(e){
+    document.getElementById(typingId).remove();
+    addMsg('Network error: '+e.message,'bot');
+  }
+}
+
+function sendQ(q){
+  document.getElementById('chatInput').value=q;
+  sendMsg();
+}
+
+function addMsg(text,type){
+  const id='m-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+  const div=document.createElement('div');
+  div.id=id;
+  div.className='msg msg-'+type;
+  div.innerHTML=type==='bot'
+    ?`<span class="msg-sender">SmartOnboard AI</span>${marked.parse(text)}`
+    :`<span class="msg-sender">You</span>${esc(text)}`;
+  const msgs=document.getElementById('chatMsgs');
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  return id;
+}
+
+// EXPORT
+function openExport(){document.getElementById('exportModal').classList.add('open')}
+function closeExport(){document.getElementById('exportModal').classList.remove('open')}
+
+async function doExport(fmt){
+  closeExport();
+  if(!analysisData)return;
+  try{
+    const res=await fetch('/api/export/'+fmt,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({content:analysisData.content,repo_url:analysisData.repo_url})
+    });
+    if(res.ok){
+      const blob=await res.blob();
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download='onboarding_guide.'+(fmt==='skill'?'md':fmt);
+      document.body.appendChild(a);a.click();
+      URL.revokeObjectURL(url);document.body.removeChild(a);
+    }else{alert('Export failed. Please try again.')}
+  }catch(e){alert('Export error: '+e.message)}
+}
+
+document.getElementById('exportModal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget)closeExport();
+});
+
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

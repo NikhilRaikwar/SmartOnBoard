@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SmartOnboard - AI-Powered Codebase Onboarding Accelerator">
+    <title>{% block title %}SmartOnboard - AI-Powered Onboarding{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066CC',
+                        secondary: '#6929C4',
+                        accent: '#D4AF37',
+                        success: '#24A148',
+                        warning: '#F1C21B',
+                        danger: '#DA1E28',
+                        background: '#F4F4F4',
+                        surface: '#FFFFFF',
+                        'text-primary': '#161616',
+                        'text-secondary': '#525252',
+                    },
+                    fontFamily: {
+                        sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 8px rgba(0, 0, 0, 0.08)',
+                        'soft-lg': '0 4px 16px rgba(0, 0, 0, 0.12)',
+                        'soft-xl': '0 8px 24px rgba(0, 0, 0, 0.15)',
+                    },
+                    borderRadius: {
+                        'soft': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+            background-color: #F4F4F4;
+            color: #161616;
+            line-height: 1.6;
+        }
+        
+        /* Smooth transitions */
+        * {
+            transition: all 0.2s ease;
+        }
+        
+        /* Soft UI Elements */
+        .soft-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .soft-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .soft-button {
+            background: linear-gradient(135deg, #0066CC 0%, #0052A3 100%);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .soft-button:hover {
+            box-shadow: 0 4px 16px rgba(0, 102, 204, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .soft-button:active {
+            transform: translateY(0);
+        }
+        
+        .soft-input {
+            background: white;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .soft-input:focus {
+            outline: none;
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Focus states for keyboard navigation */
+        *:focus-visible {
+            outline: 2px solid #0066CC;
+            outline-offset: 2px;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0066CC;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-soft sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">S</span>
+                        </div>
+                        <span class="text-xl font-semibold text-text-primary">SmartOnboard</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-text-secondary hover:text-primary font-medium">Home</a>
+                    <a href="#features" class="text-text-secondary hover:text-primary font-medium">Features</a>
+                    <a href="#how-it-works" class="text-text-secondary hover:text-primary font-medium">How It Works</a>
+                    <a href="https://github.com/yourusername/smartonboard" target="_blank" class="text-text-secondary hover:text-primary font-medium">GitHub</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="soft-button">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-white mt-20 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">S</span>
+                        </div>
+                        <span class="text-xl font-semibold text-text-primary">SmartOnboard</span>
+                    </div>
+                    <p class="text-text-secondary mb-4">
+                        AI-powered codebase onboarding accelerator. Transform weeks of manual code reading into 60 seconds of intelligent analysis.
+                    </p>
+                    <div class="flex space-x-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
+                            Powered by IBM Bob
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary/10 text-secondary">
+                            Enhanced by watsonx.ai
+                        </span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-semibold text-text-primary uppercase tracking-wider mb-4">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-text-secondary hover:text-primary">Features</a></li>
+                        <li><a href="#how-it-works" class="text-text-secondary hover:text-primary">How It Works</a></li>
+                        <li><a href="#demo" class="text-text-secondary hover:text-primary">Demo</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-semibold text-text-primary uppercase tracking-wider mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://github.com/yourusername/smartonboard" target="_blank" class="text-text-secondary hover:text-primary">GitHub</a></li>
+                        <li><a href="#" class="text-text-secondary hover:text-primary">Documentation</a></li>
+                        <li><a href="#" class="text-text-secondary hover:text-primary">API Reference</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-gray-200">
+                <p class="text-center text-text-secondary text-sm">
+                    © 2026 SmartOnboard. Built for IBM Bob Hackathon. Made with ❤️ using IBM Bob and watsonx.ai
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add cursor-pointer to all clickable elements
+        document.querySelectorAll('button, a, [onclick]').forEach(el => {
+            el.style.cursor = 'pointer';
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

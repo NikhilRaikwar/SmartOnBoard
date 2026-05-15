@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Guide - SmartOnboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #2D3436;
+            background: #ffffff;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+        }
+        
+        .header {
+            border-bottom: 3px solid #0066CC;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #0066CC;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .meta {
+            color: #525252;
+            font-size: 0.9em;
+        }
+
+        .content > table:first-of-type {
+            margin: 16px 0 28px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: table;
+        }
+
+        .content > table:first-of-type th {
+            width: 160px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-top: 10px;
+        }
+        
+        .badge-primary {
+            background: #E3F2FD;
+            color: #0066CC;
+        }
+        
+        .badge-secondary {
+            background: #F3E5F5;
+            color: #6929C4;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: #161616;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 2px solid #E0E0E0;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            color: #0066CC;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            font-family: 'IBM Plex Mono', monospace;
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #DA1E28;
+            overflow-wrap: anywhere;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            border-left: 4px solid #0066CC;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: #2D3436;
+        }
+        
+        blockquote {
+            border-left: 4px solid #6929C4;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #525252;
+            font-style: italic;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #E0E0E0;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #161616;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            color: #161616;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+        }
+        
+        .toc a {
+            color: #0066CC;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #E0E0E0;
+            text-align: center;
+            color: #525252;
+            font-size: 0.9em;
+        }
+
+        .mermaid {
+            background: #f8f9fa;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .footer .logo {
+            font-weight: 600;
+            color: #0066CC;
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                padding: 0;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            pre, blockquote {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'default' });
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Onboarding Guide</h1>
+            <div class="meta">
+                Generated by SmartOnboard • Powered by IBM Bob & watsonx.ai
+            </div>
+            <div>
+                <span class="badge badge-primary">IBM Bob</span>
+                <span class="badge badge-secondary">watsonx.ai Enhanced</span>
+            </div>
+        </div>
+        
+        <div class="content">
+            {{ content|safe }}
+        </div>
+        
+        <div class="footer">
+            <p>
+                <span class="logo">SmartOnboard</span> - AI-Powered Codebase Onboarding Accelerator
+            </p>
+            <p>
+                Transform weeks of manual code reading into 60 seconds of intelligent analysis
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                Generated on {{ generated_date }} • 
+                <a href="https://github.com/yourusername/smartonboard" style="color: #0066CC;">GitHub</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

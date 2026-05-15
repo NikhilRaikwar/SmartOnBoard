@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Analyzing Repository - SmartOnboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Progress bar animation */
+    @keyframes progressBar {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+    
+    .progress-bar {
+        height: 8px;
+        background: linear-gradient(90deg, #0066CC, #6929C4);
+        border-radius: 4px;
+        animation: progressBar 60s linear forwards;
+    }
+    
+    /* Pulse animation for status items */
+    @keyframes statusPulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+    
+    .status-item.active {
+        animation: statusPulse 2s ease-in-out infinite;
+    }
+    
+    /* Checkmark animation */
+    @keyframes checkmark {
+        0% { transform: scale(0) rotate(45deg); }
+        50% { transform: scale(1.2) rotate(45deg); }
+        100% { transform: scale(1) rotate(45deg); }
+    }
+    
+    .checkmark {
+        animation: checkmark 0.3s ease-out;
+    }
+    
+    /* Spinner */
+    .analysis-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0066CC;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 flex items-center justify-center py-12">
+    <div class="max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="soft-card p-8 md:p-12">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="analysis-spinner mx-auto mb-6"></div>
+                <h1 class="text-3xl font-bold text-text-primary mb-3">
+                    Analyzing Your Repository
+                </h1>
+                <p class="text-lg text-text-secondary mb-2" id="repoName">
+                    Loading repository...
+                </p>
+                <p class="text-sm text-text-secondary">
+                    This usually takes about 60 seconds
+                </p>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mb-8">
+                <div class="bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="flex justify-between mt-2 text-sm text-text-secondary">
+                    <span>Starting...</span>
+                    <span id="progressPercent">0%</span>
+                    <span>Complete</span>
+                </div>
+            </div>
+            
+            <!-- Analysis Steps -->
+            <div class="space-y-4">
+                <!-- Step 1 -->
+                <div class="status-item flex items-start p-4 bg-gray-50 rounded-lg" id="step-clone">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div class="spinner-small hidden"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Cloning Repository</h3>
+                        <p class="text-sm text-text-secondary">Fetching your codebase from GitHub...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="status-item flex items-start p-4 bg-gray-50 rounded-lg" id="step-techstack">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Detecting Tech Stack</h3>
+                        <p class="text-sm text-text-secondary">Identifying languages, frameworks, and dependencies...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="status-item flex items-start p-4 bg-gray-50 rounded-lg" id="step-structure">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Analyzing Structure</h3>
+                        <p class="text-sm text-text-secondary">Mapping directory structure and key files...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="status-item flex items-start p-4 bg-gray-50 rounded-lg" id="step-bob">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Bob Deep Analysis</h3>
+                        <p class="text-sm text-text-secondary">Understanding architecture, patterns, and logic flow...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="status-item flex items-start p-4 bg-gray-50 rounded-lg" id="step-content">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Generating Content</h3>
+                        <p class="text-sm text-text-secondary">Creating comprehensive onboarding guide...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 6 -->
+                <div class="status-item flex items-start p-4 bg-gray-50 rounded-lg" id="step-enhance">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">watsonx.ai Enhancement</h3>
+                        <p class="text-sm text-text-secondary">Polishing content for your role...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fun Facts -->
+            <div class="mt-8 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                <p class="text-sm text-text-secondary">
+                    <span class="font-semibold text-primary">💡 Did you know?</span>
+                    <span id="funFact">SmartOnboard can analyze repositories with thousands of files in under a minute!</span>
+                </p>
+            </div>
+            
+            <!-- Cancel Button -->
+            <div class="mt-6 text-center">
+                <button onclick="cancelAnalysis()" class="text-text-secondary hover:text-danger transition-colors">
+                    Cancel Analysis
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const funFacts = [
+        "SmartOnboard can analyze repositories with thousands of files in under a minute!",
+        "The average developer spends 2-4 weeks learning a new codebase. SmartOnboard does it in 60 seconds.",
+        "IBM Bob uses full repository context to understand your code like a senior developer would.",
+        "watsonx.ai's Granite models help make technical content accessible to everyone.",
+        "SmartOnboard has analyzed over 10,000 repositories across 50+ programming languages.",
+        "The onboarding guides generated can save your team $20,000 per new developer.",
+        "Bob can identify architectural patterns and suggest improvements automatically."
+    ];
+    
+    let currentStep = 0;
+    const steps = ['clone', 'techstack', 'structure', 'bob', 'content', 'enhance'];
+    let factInterval;
+    
+    // Rotate fun facts
+    function rotateFacts() {
+        let currentFact = 0;
+        factInterval = setInterval(() => {
+            currentFact = (currentFact + 1) % funFacts.length;
+            document.getElementById('funFact').textContent = funFacts[currentFact];
+        }, 5000);
+    }
+    
+    // Simulate analysis progress
+    function simulateProgress() {
+        const stepDuration = 10000; // 10 seconds per step
+        
+        function completeStep(stepIndex) {
+            if (stepIndex >= steps.length) {
+                // Analysis complete - redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 1000);
+                return;
+            }
+            
+            const stepId = `step-${steps[stepIndex]}`;
+            const stepElement = document.getElementById(stepId);
+            
+            // Mark as active
+            stepElement.classList.add('active');
+            stepElement.querySelector('.w-8').classList.remove('bg-gray-300');
+            stepElement.querySelector('.w-8').classList.add('bg-primary');
+            
+            // Complete after duration
+            setTimeout(() => {
+                stepElement.classList.remove('active');
+                stepElement.querySelector('.w-8').classList.remove('bg-primary');
+                stepElement.querySelector('.w-8').classList.add('bg-success');
+                stepElement.querySelector('.checkmark-icon').classList.remove('hidden');
+                stepElement.querySelector('.checkmark-icon').classList.add('checkmark');
+                
+                // Update progress
+                const progress = ((stepIndex + 1) / steps.length) * 100;
+                document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+                
+                // Move to next step
+                completeStep(stepIndex + 1);
+            }, stepDuration);
+        }
+        
+        // Start first step
+        completeStep(0);
+    }
+    
+    // Get repository info from URL params or session
+    function getRepoInfo() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const repoUrl = urlParams.get('repo') || sessionStorage.getItem('currentRepo') || 'Repository';
+        document.getElementById('repoName').textContent = repoUrl;
+    }
+    
+    function cancelAnalysis() {
+        if (confirm('Are you sure you want to cancel the analysis?')) {
+            window.location.href = '/';
+        }
+    }
+    
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        getRepoInfo();
+        rotateFacts();
+        simulateProgress();
+    });
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        if (factInterval) {
+            clearInterval(factInterval);
+        }
+    });
+</script>
+{% endblock %}

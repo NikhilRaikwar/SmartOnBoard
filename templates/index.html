@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartOnboard — AI Codebase Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F0E8;
+  --cream-dark:#EDE6D6;
+  --ink:#0F0D0A;
+  --ink-60:rgba(15,13,10,.6);
+  --ink-20:rgba(15,13,10,.12);
+  --ibm-blue:#0F62FE;
+  --ibm-blue-dark:#0043CE;
+  --ibm-cyan:#1192E8;
+  --gold:#C09B3A;
+  --gold-light:#F0D882;
+  --warm-red:#DA1E28;
+  --success:#24A148;
+  --radius-sm:6px;
+  --radius-md:12px;
+  --radius-lg:20px;
+  --radius-xl:32px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  height:68px;
+  background:rgba(245,240,232,.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--ink-20);
+}
+.logo{
+  display:flex;align-items:center;gap:12px;
+  text-decoration:none;
+}
+.logo-mark{
+  width:38px;height:38px;
+  background:var(--ink);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.logo-mark::before{
+  content:'';
+  position:absolute;
+  width:22px;height:22px;
+  border:3px solid var(--gold-light);
+  border-radius:50%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+}
+.logo-mark::after{
+  content:'';
+  position:absolute;
+  width:8px;height:8px;
+  background:var(--ibm-blue);
+  border-radius:50%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+}
+.logo-text{
+  font-family:'Syne',sans-serif;
+  font-weight:700;font-size:18px;
+  color:var(--ink);
+  letter-spacing:-.3px;
+}
+.logo-text span{color:var(--ibm-blue)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{
+  font-size:14px;font-weight:500;
+  color:var(--ink-60);text-decoration:none;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{
+  padding:9px 22px;
+  background:var(--ink);color:var(--cream);
+  border:none;border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:500;
+  cursor:pointer;
+  transition:all .2s;
+  text-decoration:none;
+}
+.nav-cta:hover{background:var(--ibm-blue);transform:translateY(-1px)}
+
+/* HERO */
+.hero{
+  min-height:auto;
+  padding:140px 5% 80px;
+  display:block;
+  max-width:1280px;
+  margin:0 auto;
+  position:relative;
+}
+.hero-left{
+  max-width:720px;
+  margin:0 auto;
+  text-align:center;
+}
+.hero-desc{
+  margin-left:auto;
+  margin-right:auto;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;
+  background:var(--ink);color:var(--gold-light);
+  border-radius:100px;
+  font-size:12px;font-weight:500;
+  letter-spacing:.5px;
+  margin-bottom:24px;
+}
+.badge-dot{
+  width:7px;height:7px;
+  background:var(--success);
+  border-radius:50%;
+}
+h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(42px,5.5vw,72px);
+  font-weight:800;
+  line-height:1.05;
+  letter-spacing:-2px;
+  color:var(--ink);
+  margin-bottom:24px;
+}
+h1 .accent{
+  color:var(--ibm-blue);
+  position:relative;
+}
+h1 .accent::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--ibm-blue),var(--ibm-cyan));
+  border-radius:2px;
+}
+.hero-desc{
+  font-size:18px;font-weight:300;
+  color:var(--ink-60);
+  line-height:1.7;
+  max-width:480px;
+  margin-bottom:40px;
+}
+.hero-form{
+  background:#fff;
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-lg);
+  padding:32px;
+  box-shadow:0 4px 40px rgba(15,13,10,.08);
+}
+.form-label{
+  font-size:12px;font-weight:500;
+  letter-spacing:.5px;
+  color:var(--ink-60);
+  text-transform:uppercase;
+  margin-bottom:8px;
+  display:block;
+}
+.form-input{
+  width:100%;
+  padding:13px 16px;
+  border:1.5px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  background:var(--cream);
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;color:var(--ink);
+  outline:none;
+  transition:border-color .2s;
+  margin-bottom:20px;
+}
+.form-input:focus{border-color:var(--ibm-blue)}
+.form-input::placeholder{color:var(--ink-60)}
+.role-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;margin-bottom:24px;
+}
+.role-card{
+  position:relative;cursor:pointer;
+}
+.role-card input{position:absolute;opacity:0;width:0;height:0}
+.role-inner{
+  padding:14px 10px;
+  border:1.5px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  text-align:center;
+  transition:all .2s;
+  background:var(--cream);
+}
+.role-card input:checked + .role-inner{
+  border-color:var(--ibm-blue);
+  background:rgba(15,98,254,.06);
+}
+.role-emoji{font-size:22px;display:block;margin-bottom:6px}
+.role-name{font-size:13px;font-weight:500;color:var(--ink)}
+.role-desc{font-size:11px;color:var(--ink-60);margin-top:2px}
+.submit-btn{
+  width:100%;
+  padding:16px;
+  background:var(--ink);
+  color:var(--cream);
+  border:none;border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;font-weight:500;
+  cursor:pointer;
+  transition:background .2s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  position:relative;overflow:hidden;
+}
+.submit-btn:hover{background:var(--ibm-blue)}
+.submit-btn svg{width:18px;height:18px}
+.examples{
+  margin-top:20px;
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;
+}
+.examples-label{font-size:12px;color:var(--ink-60)}
+.example-chip{
+  padding:5px 12px;
+  background:var(--cream-dark);
+  border:1px solid var(--ink-20);
+  border-radius:100px;
+  font-size:12px;font-weight:500;
+  color:var(--ink);
+  cursor:pointer;
+  transition:all .15s;
+}
+.example-chip:hover{background:var(--ink);color:var(--cream)}
+
+/* STATS STRIP */
+.stats-strip{
+  background:var(--ink);
+  padding:40px 5%;
+}
+.stats-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;
+}
+.stat-item{
+  padding:0 40px;
+  border-right:1px solid rgba(255,255,255,.1);
+  text-align:center;
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:'Syne',sans-serif;
+  font-size:48px;font-weight:800;
+  color:var(--gold-light);
+  letter-spacing:-2px;
+  line-height:1;
+  margin-bottom:8px;
+}
+.stat-label{
+  font-size:14px;color:rgba(255,255,255,.5);
+  font-weight:300;
+}
+
+/* FEATURES */
+.features{
+  padding:100px 5%;
+  max-width:1280px;margin:0 auto;
+}
+.section-tag{
+  font-size:12px;font-weight:500;letter-spacing:1px;
+  text-transform:uppercase;color:var(--ibm-blue);
+  margin-bottom:16px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,4vw,52px);
+  font-weight:700;
+  letter-spacing:-1.5px;
+  color:var(--ink);
+  margin-bottom:16px;
+  line-height:1.1;
+}
+.section-sub{
+  font-size:18px;font-weight:300;
+  color:var(--ink-60);
+  max-width:500px;
+  margin-bottom:60px;
+}
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.feature-card{
+  padding:32px;
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-lg);
+  background:#fff;
+  transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.feature-card:first-child{
+  grid-column:span 2;
+  background:var(--ink);
+  border-color:transparent;
+}
+.feature-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--ibm-blue),var(--ibm-cyan));
+  opacity:0;
+  transition:opacity .3s;
+}
+.feature-card:hover::before{opacity:1}
+.feature-card:first-child::before{opacity:1;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(15,13,10,.1)}
+.feature-card:first-child:hover{transform:translateY(-4px)}
+.feat-icon{
+  width:44px;height:44px;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  margin-bottom:20px;
+}
+.feat-icon-light{background:rgba(15,98,254,.1)}
+.feat-icon-dark{background:rgba(240,216,130,.12)}
+.feat-title{
+  font-family:'Syne',sans-serif;
+  font-size:20px;font-weight:700;
+  margin-bottom:10px;
+  letter-spacing:-.5px;
+}
+.dark .feat-title{color:#fff}
+.feat-desc{
+  font-size:15px;line-height:1.6;
+  color:var(--ink-60);
+}
+.dark .feat-desc{color:rgba(255,255,255,.5)}
+.feat-tag{
+  display:inline-block;margin-top:16px;
+  padding:5px 14px;
+  background:rgba(15,98,254,.1);
+  color:var(--ibm-blue);
+  border-radius:100px;
+  font-size:12px;font-weight:500;
+}
+.dark .feat-tag{
+  background:rgba(240,216,130,.15);
+  color:var(--gold-light);
+}
+
+/* HOW IT WORKS */
+.how-it-works{
+  padding:100px 5%;
+  background:var(--cream-dark);
+}
+.how-inner{
+  max-width:1280px;margin:0 auto;
+}
+.steps-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  position:relative;
+  margin-top:60px;
+}
+.steps-grid::before{
+  content:'';
+  position:absolute;
+  top:32px;left:12.5%;right:12.5%;
+  height:1px;
+  background:var(--ink-20);
+  z-index:0;
+}
+.step-item{
+  text-align:center;padding:0 20px;
+  position:relative;z-index:1;
+}
+.step-num{
+  width:64px;height:64px;
+  background:var(--ink);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+  font-family:'Syne',sans-serif;
+  font-size:22px;font-weight:700;
+  color:var(--cream);
+  position:relative;
+}
+.step-item:nth-child(2) .step-num{background:var(--ibm-blue)}
+.step-item:nth-child(3) .step-num{background:var(--ibm-cyan)}
+.step-item:nth-child(4) .step-num{
+  background:linear-gradient(135deg,var(--gold),#E8B800);
+  color:var(--ink);
+}
+.step-title{
+  font-family:'Syne',sans-serif;
+  font-size:17px;font-weight:700;
+  margin-bottom:10px;
+}
+.step-desc{font-size:14px;color:var(--ink-60);line-height:1.6}
+
+/* TECH BADGES */
+.tech-section{
+  padding:80px 5%;
+  max-width:1280px;margin:0 auto;
+}
+.tech-badges{
+  display:flex;flex-wrap:wrap;gap:12px;margin-top:40px;
+}
+.tech-badge{
+  padding:12px 20px;
+  border:1.5px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  font-size:14px;font-weight:500;
+  color:var(--ink);
+  background:#fff;
+  display:flex;align-items:center;gap:8px;
+  transition:all .2s;
+}
+.tech-badge:hover{border-color:var(--ibm-blue);color:var(--ibm-blue);transform:translateY(-2px)}
+.badge-dot-blue{
+  width:8px;height:8px;
+  background:var(--ibm-blue);
+  border-radius:50%;
+}
+
+/* DEMO SECTION */
+.demo-section{
+  padding:100px 5%;
+  background:var(--ink);
+  position:relative;overflow:hidden;
+}
+.demo-section::before{
+  content:'';
+  position:absolute;
+  top:-200px;right:-200px;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(15,98,254,.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.demo-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.demo-content .section-tag{color:var(--gold-light)}
+.demo-content .section-title{color:#fff}
+.demo-content .section-sub{color:rgba(255,255,255,.5)}
+.demo-list{
+  list-style:none;display:flex;flex-direction:column;gap:16px;
+}
+.demo-list li{
+  display:flex;align-items:flex-start;gap:14px;
+  font-size:15px;color:rgba(255,255,255,.7);
+}
+.demo-list .check{
+  width:22px;height:22px;min-width:22px;
+  background:rgba(36,161,72,.2);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:1px;
+}
+.demo-list .check::after{
+  content:'✓';
+  font-size:12px;color:var(--success);font-weight:700;
+}
+.demo-panel{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.demo-panel-tabs{
+  display:flex;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.dp-tab{
+  padding:14px 20px;
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.35);
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all .2s;
+  min-width:max-content;
+}
+.dp-tab.active{
+  color:#fff;
+  border-bottom-color:var(--ibm-blue);
+}
+.dp-body{
+  padding:24px;
+  font-family:'DM Mono',monospace;
+  font-size:12px;line-height:1.8;
+  color:rgba(255,255,255,.6);
+}
+.dp-highlight{color:var(--gold-light);font-weight:500}
+.dp-blue{color:#60A5FA}
+.dp-green{color:#34D399}
+.dp-purple{color:#C4B5FD}
+
+/* CTA */
+.cta-section{
+  padding:120px 5%;
+  text-align:center;
+}
+.cta-inner{max-width:700px;margin:0 auto}
+.cta-inner .section-title{margin-bottom:20px}
+.cta-inner .section-sub{margin:0 auto 40px}
+.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{
+  padding:16px 36px;
+  background:var(--ink);color:var(--cream);
+  border:none;border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;font-weight:500;
+  cursor:pointer;
+  transition:all .2s;
+  text-decoration:none;display:inline-block;
+}
+.btn-primary:hover{background:var(--ibm-blue);transform:translateY(-2px)}
+.btn-outline{
+  padding:16px 36px;
+  background:transparent;color:var(--ink);
+  border:1.5px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;font-weight:500;
+  cursor:pointer;
+  transition:all .2s;
+  text-decoration:none;display:inline-block;
+}
+.btn-outline:hover{border-color:var(--ink);transform:translateY(-2px)}
+
+/* FOOTER */
+footer{
+  padding:60px 5%;
+  border-top:1px solid var(--ink-20);
+}
+.footer-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-copy{
+  font-size:13px;color:var(--ink-60);
+}
+.footer-links{display:flex;gap:24px}
+.footer-links a{
+  font-size:13px;color:var(--ink-60);
+  text-decoration:none;transition:color .2s;
+}
+.footer-links a:hover{color:var(--ink)}
+
+/* LOADING STATE */
+.loading-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(245,240,232,.98);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:999;
+  padding:24px;
+}
+.loading-overlay.active{display:flex}
+.loading-card{
+  width:min(440px,100%);
+  background:#fff;
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-lg);
+  box-shadow:0 24px 80px rgba(15,13,10,.16);
+  padding:34px 28px;
+  text-align:center;
+}
+.loading-spinner{
+  width:58px;height:58px;
+  margin:0 auto 20px;
+  border:4px solid var(--cream-dark);
+  border-top-color:var(--ibm-blue);
+  border-right-color:var(--ibm-cyan);
+  border-radius:50%;
+}
+.loading-text{
+  font-family:'Syne',sans-serif;
+  font-size:24px;font-weight:700;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.loading-sub{font-size:15px;color:var(--ink-60);line-height:1.55}
+.loading-steps{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:22px;
+}
+.loading-step{
+  background:var(--cream);
+  border:1px solid var(--ink-20);
+  border-radius:var(--radius-sm);
+  padding:9px 8px;
+  font-size:12px;
+  color:var(--ink-60);
+}
+
+/* ANIMATIONS */
+.fade-up{
+  opacity:1;transform:none;
+}
+.fade-up.visible{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .hero{padding-top:120px}
+  .nav-links{display:none}
+  .hero-left{text-align:left}
+  .hero-desc{margin-left:0}
+  .role-grid{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);padding:20px}
+  .features-grid{grid-template-columns:1fr}
+  .feature-card:first-child{grid-column:span 1}
+  .steps-grid{grid-template-columns:repeat(2,1fr);gap:30px}
+  .steps-grid::before{display:none}
+  .demo-inner{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;gap:20px;text-align:center}
+}
+@media(max-width:640px){
+  nav{padding:0 18px}
+  .logo-text{font-size:16px}
+  .nav-cta{padding:8px 14px}
+  .hero{padding:105px 18px 54px}
+  h1{font-size:42px;letter-spacing:-1px}
+  .hero-form{padding:22px}
+  .stats-inner{grid-template-columns:1fr}
+  .section-title{font-size:38px;letter-spacing:-1px}
+  .features,.how-it-works,.tech-section,.demo-section,.cta-section{padding-left:18px;padding-right:18px}
+  .steps-grid{grid-template-columns:1fr}
+  .demo-panel-tabs{overflow-x:auto}
+  .dp-body{font-size:12px;padding:20px;white-space:pre-wrap;overflow-wrap:anywhere}
+  .cta-buttons{flex-direction:column}
+  .btn-primary,.btn-outline{text-align:center}
+  .loading-steps{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-card">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Analyzing Repository</div>
+    <div class="loading-sub">Cloning the repo, scanning real files, and building your onboarding guide.</div>
+    <div class="loading-steps">
+      <div class="loading-step">Clone</div>
+      <div class="loading-step">Scan</div>
+      <div class="loading-step">Generate</div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-mark"></div>
+    <span class="logo-text">Smart<span>Onboard</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#demo">Demo</a>
+    <a href="https://github.com/NikhilRaikwar/SmartOnBoard" target="_blank">GitHub</a>
+  </div>
+  <a href="#hero-form" class="nav-cta">Get Started</a>
+</nav>
+
+<main>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left fade-up">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      IBM Bob Hackathon 2026
+    </div>
+    <h1>
+      Onboard Any<br>
+      Codebase in<br>
+      <span class="accent">60 Seconds</span>
+    </h1>
+    <p class="hero-desc">
+      SmartOnboard uses IBM Bob and watsonx.ai to generate comprehensive, role-specific onboarding guides from any GitHub repository — instantly.
+    </p>
+
+    <div class="hero-form" id="hero-form">
+      <label class="form-label">GitHub Repository URL</label>
+      <input
+        type="url"
+        id="repoUrl"
+        class="form-input"
+        placeholder="https://github.com/owner/repository"
+      >
+
+      <label class="form-label">Your Role</label>
+      <div class="role-grid">
+        <label class="role-card">
+          <input type="radio" name="role" value="engineer" checked>
+          <div class="role-inner">
+            <span class="role-emoji">👨‍💻</span>
+            <div class="role-name">Engineer</div>
+            <div class="role-desc">Technical deep-dive</div>
+          </div>
+        </label>
+        <label class="role-card">
+          <input type="radio" name="role" value="manager">
+          <div class="role-inner">
+            <span class="role-emoji">👔</span>
+            <div class="role-name">Manager</div>
+            <div class="role-desc">High-level overview</div>
+          </div>
+        </label>
+        <label class="role-card">
+          <input type="radio" name="role" value="architect">
+          <div class="role-inner">
+            <span class="role-emoji">🏗️</span>
+            <div class="role-name">Architect</div>
+            <div class="role-desc">System design focus</div>
+          </div>
+        </label>
+      </div>
+
+      <button class="submit-btn" id="analyzeBtn" onclick="analyzeRepo()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Generate Onboarding Guide
+      </button>
+
+      <div class="examples">
+        <span class="examples-label">Try:</span>
+        <button class="example-chip" onclick="fillExample('https://github.com/sindresorhus/is')">sindresorhus/is</button>
+        <button class="example-chip" onclick="fillExample('https://github.com/expressjs/express')">expressjs/express</button>
+        <button class="example-chip" onclick="fillExample('https://github.com/pallets/flask')">pallets/flask</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item fade-up">
+      <div class="stat-num">95%</div>
+      <div class="stat-label">Onboarding time saved</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.1s">
+      <div class="stat-num">60s</div>
+      <div class="stat-label">Average analysis time</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.2s">
+      <div class="stat-num">$20K</div>
+      <div class="stat-label">Saved per new hire</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.3s">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Files analyzed at once</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-tag fade-up">Capabilities</div>
+  <h2 class="section-title fade-up">Everything a new developer<br>needs to know</h2>
+  <p class="section-sub fade-up">Powered by IBM Bob's full repository context and watsonx.ai's Llama 3.3 70B model.</p>
+
+  <div class="features-grid">
+    <div class="feature-card dark fade-up">
+      <div class="feat-icon feat-icon-dark">⚡</div>
+      <div class="feat-title dark">Real Repository Analysis</div>
+      <p class="feat-desc dark">Performs actual git clone, scans manifests, detects languages from extensions, and identifies entry points — not mocked data, not templates.</p>
+      <span class="feat-tag dark">IBM Bob + watsonx.ai</span>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:.1s">
+      <div class="feat-icon feat-icon-light">🗺️</div>
+      <div class="feat-title">Architecture Diagrams</div>
+      <p class="feat-desc">Auto-generated Mermaid diagrams showing component relationships, data flow, and directory structure.</p>
+      <span class="feat-tag">Auto-generated</span>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:.15s">
+      <div class="feat-icon feat-icon-light">👥</div>
+      <div class="feat-title">Role-Specific Views</div>
+      <p class="feat-desc">Engineers get setup commands. Managers get risk areas. Architects get system design insights.</p>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:.2s">
+      <div class="feat-icon feat-icon-light">💬</div>
+      <div class="feat-title">Interactive Q&A</div>
+      <p class="feat-desc">Chat with your codebase using cached analysis. Ask follow-up questions, get context-aware answers.</p>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:.25s">
+      <div class="feat-icon feat-icon-light">📤</div>
+      <div class="feat-title">Export Anywhere</div>
+      <p class="feat-desc">Download as HTML, Markdown, or Bob Skill format. Share with your team or reuse across projects.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works" id="how-it-works">
+  <div class="how-inner">
+    <div class="section-tag fade-up">Process</div>
+    <h2 class="section-title fade-up">From URL to guide<br>in four steps</h2>
+
+    <div class="steps-grid">
+      <div class="step-item fade-up">
+        <div class="step-num">1</div>
+        <div class="step-title">Paste GitHub URL</div>
+        <p class="step-desc">Any public repository. SmartOnboard does the rest.</p>
+      </div>
+      <div class="step-item fade-up" style="transition-delay:.1s">
+        <div class="step-num">2</div>
+        <div class="step-title">Select Your Role</div>
+        <p class="step-desc">Engineer, Manager, or Architect — get tailored content.</p>
+      </div>
+      <div class="step-item fade-up" style="transition-delay:.2s">
+        <div class="step-num">3</div>
+        <div class="step-title">AI Analysis</div>
+        <p class="step-desc">Real clone, real scan, real watsonx.ai enhancement.</p>
+      </div>
+      <div class="step-item fade-up" style="transition-delay:.3s">
+        <div class="step-num">4</div>
+        <div class="step-title">Read & Contribute</div>
+        <p class="step-desc">Comprehensive guide ready. First PR on day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH SECTION -->
+<section class="tech-section">
+  <div class="section-tag fade-up">Technology</div>
+  <h2 class="section-title fade-up">Built on IBM's<br>enterprise AI stack</h2>
+
+  <div class="tech-badges">
+    <span class="tech-badge"><span class="badge-dot-blue"></span>IBM Bob Custom Mode</span>
+    <span class="tech-badge"><span class="badge-dot-blue"></span>IBM watsonx.ai</span>
+    <span class="tech-badge"><span class="badge-dot-blue"></span>Llama 3.3 70B</span>
+    <span class="tech-badge"><span class="badge-dot-blue"></span>Python Flask</span>
+    <span class="tech-badge"><span class="badge-dot-blue"></span>GitPython</span>
+    <span class="tech-badge"><span class="badge-dot-blue"></span>Mermaid.js</span>
+    <span class="tech-badge"><span class="badge-dot-blue"></span>Marked.js</span>
+    <span class="tech-badge"><span class="badge-dot-blue"></span>Bob Skills API</span>
+  </div>
+</section>
+
+<!-- DEMO SECTION -->
+<section class="demo-section" id="demo">
+  <div class="demo-inner">
+    <div class="demo-content fade-up">
+      <div class="section-tag">Live Output</div>
+      <h2 class="section-title">What the guide<br>looks like</h2>
+      <p class="section-sub">Real content from a real repository scan. Structured, readable, immediately useful.</p>
+      <ul class="demo-list">
+        <li><span class="check"></span>Project overview from README analysis</li>
+        <li><span class="check"></span>Tech stack with version numbers</li>
+        <li><span class="check"></span>Mermaid architecture diagrams</li>
+        <li><span class="check"></span>Key files table with line counts</li>
+        <li><span class="check"></span>Setup commands inferred from manifests</li>
+        <li><span class="check"></span>First contribution ideas</li>
+      </ul>
+    </div>
+    <div class="demo-panel fade-up" style="transition-delay:.2s">
+      <div class="demo-panel-tabs">
+        <div class="dp-tab active" data-demo-tab="overview">overview.md</div>
+        <div class="dp-tab" data-demo-tab="architecture">architecture.md</div>
+        <div class="dp-tab" data-demo-tab="setup">setup.sh</div>
+      </div>
+      <div class="dp-body" id="demoBody">
+        <div class="dp-highlight"># SmartOnboard Guide: sindresorhus/is</div>
+        <div>&nbsp;</div>
+        <div>| Field | Value |</div>
+        <div>|---|---|</div>
+        <div>| Generated | 2026-05-15 23:42:41 |</div>
+        <div>| Repository | <span class="dp-blue">https://github.com/sindresorhus/is</span> |</div>
+        <div>| Role | <span class="dp-purple">Engineer</span> |</div>
+        <div>&nbsp;</div>
+        <div class="dp-highlight">## Project Overview</div>
+        <div>&nbsp;</div>
+        <div>A utility library for type checking in JavaScript/</div>
+        <div>TypeScript. Provides a comprehensive set of type-</div>
+        <div>checking utilities with full TypeScript support.</div>
+        <div>&nbsp;</div>
+        <div>- Files scanned: <span class="dp-green">19</span></div>
+        <div>- Lines scanned: <span class="dp-green">6,552</span></div>
+        <div>- Languages: <span class="dp-blue">TypeScript, JavaScript</span></div>
+        <div>- Frameworks: <span class="dp-blue">npm, Jest</span></div>
+        <div>&nbsp;</div>
+        <div class="dp-highlight">## Setup Commands</div>
+        <div>&nbsp;</div>
+        <div><span class="dp-green">git clone</span> https://github.com/sindresorhus/is</div>
+        <div><span class="dp-green">cd</span> is && <span class="dp-green">npm install</span></div>
+        <div><span class="dp-green">npm test</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="section-tag fade-up">Get Started</div>
+    <h2 class="section-title fade-up">Ready to onboard<br>smarter?</h2>
+    <p class="section-sub fade-up">Paste a GitHub URL above and generate your first guide in under 60 seconds.</p>
+    <div class="cta-buttons fade-up">
+      <a href="#hero-form" class="btn-primary">Generate Guide Now →</a>
+      <a href="https://github.com/NikhilRaikwar/SmartOnBoard" target="_blank" class="btn-outline">View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2026 SmartOnboard · Built for IBM Bob Hackathon · Powered by IBM Bob &amp; watsonx.ai</div>
+    <div class="footer-links">
+      <a href="https://github.com/NikhilRaikwar/SmartOnBoard" target="_blank">GitHub</a>
+      <a href="#features">Features</a>
+      <a href="#how-it-works">Docs</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function fillExample(url){
+  document.getElementById('repoUrl').value=url;
+  document.getElementById('repoUrl').focus();
+}
+
+function analyzeRepo(){
+  const url=document.getElementById('repoUrl').value.trim();
+  const role=document.querySelector('input[name="role"]:checked').value;
+  if(!url){document.getElementById('repoUrl').focus();return}
+  if(!url.startsWith('https://github.com/')){
+    alert('Please enter a valid GitHub URL (https://github.com/owner/repo)');
+    return;
+  }
+  document.getElementById('loadingOverlay').classList.add('active');
+  fetch('/api/analyze',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({repo_url:url,role:role})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    document.getElementById('loadingOverlay').classList.remove('active');
+    if(data.status==='success'){
+      sessionStorage.setItem('analysisData',JSON.stringify(data.data));
+      window.location.href='/dashboard';
+    }else{
+      alert('Error: '+(data.message||'Analysis failed'));
+    }
+  })
+  .catch(err=>{
+    document.getElementById('loadingOverlay').classList.remove('active');
+    alert('Network error: '+err.message);
+  });
+}
+
+document.getElementById('repoUrl').addEventListener('keypress',e=>{
+  if(e.key==='Enter')analyzeRepo();
+});
+
+const demoSnippets={
+  overview: `
+        <div class="dp-highlight"># SmartOnboard Guide: sindresorhus/is</div>
+        <div>&nbsp;</div>
+        <div>| Field | Value |</div>
+        <div>|---|---|</div>
+        <div>| Generated | 2026-05-15 23:42:41 |</div>
+        <div>| Repository | <span class="dp-blue">https://github.com/sindresorhus/is</span> |</div>
+        <div>| Role | <span class="dp-purple">Engineer</span> |</div>
+        <div>&nbsp;</div>
+        <div class="dp-highlight">## Project Overview</div>
+        <div>&nbsp;</div>
+        <div>A utility library for type checking in JavaScript/</div>
+        <div>TypeScript. Provides type guards and assertions</div>
+        <div>with full TypeScript support.</div>
+        <div>&nbsp;</div>
+        <div>- Files scanned: <span class="dp-green">19</span></div>
+        <div>- Lines scanned: <span class="dp-green">6,552</span></div>
+        <div>- Languages: <span class="dp-blue">TypeScript, JavaScript</span></div>`,
+  architecture: `
+        <div class="dp-highlight"># architecture.md</div>
+        <div>&nbsp;</div>
+        <div>## Architecture Summary</div>
+        <div>&nbsp;</div>
+        <div>graph TD</div>
+        <div>&nbsp;&nbsp;Repo[is] --&gt; Source[source]</div>
+        <div>&nbsp;&nbsp;Source --&gt; API[index.ts]</div>
+        <div>&nbsp;&nbsp;API --&gt; Types[types.ts]</div>
+        <div>&nbsp;&nbsp;Repo --&gt; Tests[test]</div>
+        <div>&nbsp;&nbsp;Repo --&gt; Config[package.json]</div>
+        <div>&nbsp;</div>
+        <div>## Read Order</div>
+        <div>- README.md for usage examples</div>
+        <div>- source/index.ts for exported type guards</div>
+        <div>- test/test.ts for expected behavior</div>`,
+  setup: `
+        <div class="dp-highlight">#!/usr/bin/env bash</div>
+        <div>&nbsp;</div>
+        <div><span class="dp-green">git clone</span> https://github.com/sindresorhus/is</div>
+        <div><span class="dp-green">cd</span> is</div>
+        <div><span class="dp-green">npm install</span></div>
+        <div><span class="dp-green">npm test</span></div>
+        <div>&nbsp;</div>
+        <div class="dp-highlight"># Detected scripts</div>
+        <div>npm run build</div>
+        <div>npm run test</div>
+        <div>&nbsp;</div>
+        <div class="dp-highlight"># Before contributing</div>
+        <div>npm run build && npm test</div>`
+};
+
+document.querySelectorAll('.dp-tab').forEach((tab)=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.dp-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('demoBody').innerHTML=demoSnippets[tab.dataset.demoTab]||demoSnippets.overview;
+  });
+});
+</script>
+</body>
+</html>

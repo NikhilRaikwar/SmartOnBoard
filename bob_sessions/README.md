@@ -1,0 +1,77 @@
+# IBM Bob Session Reports
+
+This folder contains the IBM Bob evidence for hackathon judging.
+
+The official guide requires:
+
+1. A screenshot of the Bob task session consumption summary.
+2. The exported Bob task history markdown file.
+3. The above for every Bob task/session relevant to the submission.
+
+## Included Evidence
+
+```text
+bob_sessions/
+  README.md
+  bob_task_may-15-2026_11-59-53-pm.md
+  screenshots/
+    task_consumption_may_15.png
+```
+
+### 1. SmartOnboard Development Session
+
+- **Exported Bob report**: `bob_task_may-15-2026_11-59-53-pm.md`
+- **Consumption screenshot**: `screenshots/task_consumption_may_15.png`
+- **Date**: May 15, 2026
+- **What Bob helped with**:
+  - Project planning and hackathon positioning
+  - SmartOnboard architecture and feature breakdown
+  - Repository onboarding workflow design
+  - Bob custom mode and skill requirements
+  - Implementation guidance for the working Flask MVP
+
+## Recommended Extra Evidence
+
+The current folder has the minimum Bob session evidence started. If you have time before submission, add these extra screenshots:
+
+```text
+bob_sessions/
+  screenshots/
+    bob_ide_in_use.png
+    bob_custom_mode.png
+    bob_skill_definition.png
+    app_dashboard.png
+    exported_html_guide.png
+    chatbot_answer.png
+    bob_bobalytics_usage.png
+```
+
+## Screenshot Guidance
+
+The task consumption screenshot is the most important Bob evidence. It should show:
+
+- IBM Bob task/session header
+- Task ID
+- Context length
+- Token/cache/API usage
+- Bob task checklist or visible task progress
+
+Screenshots of Bob IDE next to project code, Bob custom mode files, and Bobalytics are useful supporting evidence, but they do not replace the exported Bob report and task consumption screenshot.
+
+## Optional Sessions To Export
+
+If you have additional Bob tasks, export 2-4 more sessions:
+
+1. Building the real GitHub repository analyzer.
+2. Implementing watsonx.ai enhancement.
+3. Creating the Bob custom mode and reusable skill.
+4. UI, export, chatbot, and final debugging.
+
+## Security Check Before Upload
+
+Before making the repo public:
+
+- Confirm `.env` is not committed.
+- Confirm no API keys appear in exported Bob markdown.
+- Redact any credentials from screenshots.
+- Run a text search for `API_KEY`, `TOKEN`, `SECRET`, and real key prefixes.

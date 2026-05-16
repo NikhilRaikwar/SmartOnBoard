@@ -247,17 +247,16 @@ Vercel serverless functions have execution time limits. For the demo, use small-
 
 ### Vercel Analytics
 
-Vercel Analytics can be enabled from the Vercel dashboard after deployment. If SmartOnboard is later moved to a React or Next.js frontend shell, install the analytics package and add the React component:
+Vercel Web Analytics is included through the Vercel Insights script in the HTML templates:
 
-```bash
-npm i @vercel/analytics
+```html
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 ```
 
-```tsx
-import { Analytics } from "@vercel/analytics/next"
-```
-
-For the current Flask + vanilla HTML version, the app does not need this React component to run. Deploy the project, visit the site, and use Vercel's dashboard analytics or a framework-appropriate analytics snippet if page-view tracking is required.
+After deployment, visit the live site once and check the Vercel dashboard to confirm page views are being collected.
 
 ## IBM Bob Evidence
 

@@ -220,7 +220,10 @@ Vercel serverless functions have execution time limits. For the demo, use small-
 Hackathon submissions must clearly demonstrate meaningful IBM Bob usage. This repo includes:
 
 - `bob_sessions/bob_task_may-16-2026_1-08-32-am.md`
+- `bob_sessions/bob_task_may-16-2026_4-50-34-pm.md`
 - `bob_sessions/screenshots/task_consumption_may_15.png`
+- `bob_sessions/screenshots/task_consumption_may_16.png`
+- `bob_sessions/screenshots/bob_session_usage.png`
 - `bob_sessions/screenshots/bob_bobalytics_usage.png`
 - `.bob/modes/onboarding-guide-generator.yaml`
 - `.bob/skills/onboarding-guide.md`

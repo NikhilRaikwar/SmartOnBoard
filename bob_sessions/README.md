@@ -14,8 +14,12 @@ The official guide requires:
 bob_sessions/
   README.md
   bob_task_may-16-2026_1-08-32-am.md
+  bob_task_may-16-2026_4-50-34-pm.md
   screenshots/
     task_consumption_may_15.png
+    task_consumption_may_16.png
+    bob_session_usage.png
+    bob_bobalytics_usage.png
 ```
 
 ### 1. SmartOnboard Development Session
@@ -30,6 +34,18 @@ bob_sessions/
   - Bob custom mode and skill requirements
   - Implementation guidance for the working Flask MVP
 
+### 2. SmartOnboard Evidence / Demo Session
+
+- **Exported Bob report**: `bob_task_may-16-2026_4-50-34-pm.md`
+- **Consumption screenshot**: `screenshots/task_consumption_may_16.png`
+- **Bob session screenshot**: `screenshots/bob_session_usage.png`
+- **Date**: May 16, 2026
+- **What Bob helped with**:
+  - Verifying Bob IDE usage evidence
+  - Reviewing repo context and SmartOnboard workflow
+  - Demonstrating Bob session usage for hackathon judges
+  - Preparing final submission proof assets
+
 ## Recommended Extra Evidence
 
 The current folder has the minimum Bob session evidence started. If you have time before submission, add these extra screenshots:
@@ -37,7 +53,6 @@ The current folder has the minimum Bob session evidence started. If you have tim
 ```text
 bob_sessions/
   screenshots/
-    bob_ide_in_use.png
     bob_custom_mode.png
     bob_skill_definition.png
     app_dashboard.png

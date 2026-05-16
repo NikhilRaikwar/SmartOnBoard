@@ -22,6 +22,9 @@ bob_sessions/
     bob_bobalytics_usage.png
     watsonxai_health.png
     vercel_env.png
+    watsonx_orchestrate_deployed.png
+    watsonx_orchestrate_agent_builder.png
+    watsonx_orchestrate_live_test.png
 ```
 
 ### 1. SmartOnboard Development Session
@@ -43,6 +46,9 @@ bob_sessions/
 - **Bob session screenshot**: `screenshots/bob_session_usage.png`
 - **watsonx.ai health proof**: `screenshots/watsonxai_health.png`
 - **Vercel environment proof**: `screenshots/vercel_env.png`
+- **watsonx Orchestrate deployed agent**: `screenshots/watsonx_orchestrate_deployed.png`
+- **watsonx Orchestrate agent builder**: `screenshots/watsonx_orchestrate_agent_builder.png`
+- **watsonx Orchestrate live test**: `screenshots/watsonx_orchestrate_live_test.png`
 - **Date**: May 16, 2026
 - **What Bob helped with**:
   - Verifying Bob IDE usage evidence
@@ -50,9 +56,21 @@ bob_sessions/
   - Demonstrating Bob session usage for hackathon judges
   - Preparing final submission proof assets
 
-## Recommended Extra Evidence
+### 3. watsonx Orchestrate Agent Evidence
 
-The current folder has the minimum Bob session evidence started. If you have time before submission, add these extra screenshots:
+- **Agent name**: New Dev Onboarding Coordinator
+- **Deployed agent screenshot**: `screenshots/watsonx_orchestrate_deployed.png`
+- **Agent builder screenshot**: `screenshots/watsonx_orchestrate_agent_builder.png`
+- **Live test screenshot**: `screenshots/watsonx_orchestrate_live_test.png`
+- **Date**: May 16, 2026
+- **What it demonstrates**:
+  - A live watsonx Orchestrate agent exists for SmartOnboard.
+  - The agent accepts a GitHub onboarding request and routes the developer into the SmartOnboard flow.
+  - The agent explains the generated guide sections: Overview, Architecture, Setup, Key Files, Workflow, First Steps, Q&A, and export options.
+
+## Additional Evidence To Add If Time
+
+The current folder includes Bob session exports, Bob usage screenshots, watsonx.ai proof, Vercel environment proof, and watsonx Orchestrate agent proof. If you have time before submission, add these extra screenshots:
 
 ```text
 bob_sessions/
@@ -62,7 +80,6 @@ bob_sessions/
     app_dashboard.png
     exported_html_guide.png
     chatbot_answer.png
-    bob_bobalytics_usage.png
 ```
 
 ## Screenshot Guidance

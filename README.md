@@ -4,6 +4,7 @@ AI-powered codebase onboarding accelerator built for the [IBM Bob Hackathon](htt
 
 [![IBM Bob](https://img.shields.io/badge/IBM%20Bob-Full%20Repo%20Context-0F62FE)](https://bob.ibm.com)
 [![watsonx.ai](https://img.shields.io/badge/watsonx.ai-Guide%20Generation-6929C4)](https://www.ibm.com/watsonx)
+[![watsonx Orchestrate](https://img.shields.io/badge/watsonx%20Orchestrate-Onboarding%20Agent-0F62FE)](https://www.ibm.com/products/watsonx-orchestrate)
 [![Python](https://img.shields.io/badge/Python-Flask-111827)](https://flask.palletsprojects.com)
 [![Mermaid](https://img.shields.io/badge/Diagrams-Mermaid-C09B3A)](https://mermaid.js.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-24A148.svg)](LICENSE)
@@ -40,6 +41,21 @@ IBM Bob is central to the project:
 - The repo includes a reusable Bob skill: `.bob/skills/onboarding-guide.md`.
 - The product itself is designed around Bob-style full repository context, code explanation, context mentions, and literate onboarding documentation.
 - IBM watsonx.ai formats the repository scan into polished, role-specific onboarding material.
+- IBM watsonx Orchestrate provides a live "New Dev Onboarding Coordinator" agent that routes developers from a repository onboarding request into the SmartOnboard workflow.
+
+## watsonx Orchestrate Agent
+
+SmartOnboard includes a watsonx Orchestrate agent named **New Dev Onboarding Coordinator**. The agent gives new developers a guided first step: paste a GitHub URL, choose a role, open SmartOnboard, and generate the onboarding guide.
+
+![watsonx Orchestrate deployed agent](bob_sessions/screenshots/watsonx_orchestrate_deployed.png)
+
+The agent profile describes the SmartOnboard workflow and connects the IBM Bob + watsonx.ai project story to an agentic onboarding assistant.
+
+![watsonx Orchestrate agent builder](bob_sessions/screenshots/watsonx_orchestrate_agent_builder.png)
+
+The live test shows the agent responding to a real onboarding request for `https://github.com/sindresorhus/is` and routing the developer into SmartOnboard.
+
+![watsonx Orchestrate live test](bob_sessions/screenshots/watsonx_orchestrate_live_test.png)
 
 ## Demo Flow
 
@@ -156,9 +172,17 @@ smartonboard/
   bob_sessions/
     README.md
     bob_task_may-16-2026_1-08-32-am.md
+    bob_task_may-16-2026_4-50-34-pm.md
     screenshots/
       task_consumption_may_15.png
+      task_consumption_may_16.png
+      bob_session_usage.png
       bob_bobalytics_usage.png
+      watsonxai_health.png
+      vercel_env.png
+      watsonx_orchestrate_deployed.png
+      watsonx_orchestrate_agent_builder.png
+      watsonx_orchestrate_live_test.png
   ARCHITECTURE.md
   API.md
   SETUP.md
@@ -227,6 +251,9 @@ Hackathon submissions must clearly demonstrate meaningful IBM Bob usage. This re
 - `bob_sessions/screenshots/bob_bobalytics_usage.png`
 - `bob_sessions/screenshots/watsonxai_health.png`
 - `bob_sessions/screenshots/vercel_env.png`
+- `bob_sessions/screenshots/watsonx_orchestrate_deployed.png`
+- `bob_sessions/screenshots/watsonx_orchestrate_agent_builder.png`
+- `bob_sessions/screenshots/watsonx_orchestrate_live_test.png`
 - `.bob/modes/onboarding-guide-generator.yaml`
 - `.bob/skills/onboarding-guide.md`
 
@@ -236,7 +263,7 @@ See `bob_sessions/README.md` for evidence organization and screenshot guidance.
 
 Based on the official IBM Bob Hackathon page, submissions are judged on application of technology, presentation, business value, and originality. SmartOnboard is built around those criteria:
 
-- **Application of Technology**: real Bob-assisted development evidence, custom Bob mode, reusable Bob skill, repo-context workflow, and IBM watsonx.ai guide generation.
+- **Application of Technology**: real Bob-assisted development evidence, custom Bob mode, reusable Bob skill, repo-context workflow, IBM watsonx.ai guide generation, and a live watsonx Orchestrate onboarding coordinator agent.
 - **Presentation**: polished dashboard, exportable HTML guides, demo script, screenshots, and clear documentation.
 - **Business Value**: reduces onboarding time for new developers and repeated explanation work for senior engineers.
 - **Originality**: turns Bob's repo understanding into a reusable onboarding accelerator instead of a one-off chat prompt.

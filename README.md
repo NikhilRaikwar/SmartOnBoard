@@ -225,6 +225,8 @@ Hackathon submissions must clearly demonstrate meaningful IBM Bob usage. This re
 - `bob_sessions/screenshots/task_consumption_may_16.png`
 - `bob_sessions/screenshots/bob_session_usage.png`
 - `bob_sessions/screenshots/bob_bobalytics_usage.png`
+- `bob_sessions/screenshots/watsonxai_health.png`
+- `bob_sessions/screenshots/vercel_env.png`
 - `.bob/modes/onboarding-guide-generator.yaml`
 - `.bob/skills/onboarding-guide.md`
 

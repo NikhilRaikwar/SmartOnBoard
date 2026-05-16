@@ -20,6 +20,8 @@ bob_sessions/
     task_consumption_may_16.png
     bob_session_usage.png
     bob_bobalytics_usage.png
+    watsonxai_health.png
+    vercel_env.png
 ```
 
 ### 1. SmartOnboard Development Session
@@ -39,6 +41,8 @@ bob_sessions/
 - **Exported Bob report**: `bob_task_may-16-2026_4-50-34-pm.md`
 - **Consumption screenshot**: `screenshots/task_consumption_may_16.png`
 - **Bob session screenshot**: `screenshots/bob_session_usage.png`
+- **watsonx.ai health proof**: `screenshots/watsonxai_health.png`
+- **Vercel environment proof**: `screenshots/vercel_env.png`
 - **Date**: May 16, 2026
 - **What Bob helped with**:
   - Verifying Bob IDE usage evidence

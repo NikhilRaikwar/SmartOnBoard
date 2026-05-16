@@ -5,11 +5,16 @@ AI-powered codebase onboarding accelerator built for the [IBM Bob Hackathon](htt
 [![IBM Bob](https://img.shields.io/badge/IBM%20Bob-Full%20Repo%20Context-0F62FE)](https://bob.ibm.com)
 [![watsonx.ai](https://img.shields.io/badge/watsonx.ai-Guide%20Generation-6929C4)](https://www.ibm.com/watsonx)
 [![watsonx Orchestrate](https://img.shields.io/badge/watsonx%20Orchestrate-Onboarding%20Agent-0F62FE)](https://www.ibm.com/products/watsonx-orchestrate)
+[![Demo Video](https://img.shields.io/badge/Demo-YouTube-FF0000)](https://youtu.be/E_lETRSmvsA)
 [![Python](https://img.shields.io/badge/Python-Flask-111827)](https://flask.palletsprojects.com)
 [![Mermaid](https://img.shields.io/badge/Diagrams-Mermaid-C09B3A)](https://mermaid.js.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-24A148.svg)](LICENSE)
 
 ![SmartOnboard banner](docs/images/banner.png)
+
+## Demo Video
+
+Watch the SmartOnboard demo: [https://youtu.be/E_lETRSmvsA](https://youtu.be/E_lETRSmvsA)
 
 ## What It Does
 
@@ -238,6 +243,20 @@ This repo includes `api/index.py` and `vercel.json` for Vercel's Python serverle
 6. Deploy and test `/api/health`.
 
 Vercel serverless functions have execution time limits. For the demo, use small-to-medium repositories such as `https://github.com/sindresorhus/is`. For large repositories, deploy the same Flask app to a long-running service such as Render, Railway, Fly.io, or IBM Cloud.
+
+### Vercel Analytics
+
+Vercel Analytics can be enabled from the Vercel dashboard after deployment. If SmartOnboard is later moved to a React or Next.js frontend shell, install the analytics package and add the React component:
+
+```bash
+npm i @vercel/analytics
+```
+
+```tsx
+import { Analytics } from "@vercel/analytics/next"
+```
+
+For the current Flask + vanilla HTML version, the app does not need this React component to run. Deploy the project, visit the site, and use Vercel's dashboard analytics or a framework-appropriate analytics snippet if page-view tracking is required.
 
 ## IBM Bob Evidence
 

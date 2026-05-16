@@ -91,15 +91,13 @@ class ContentGenerator:
 
     def _architecture(self) -> str:
         structure = self.analysis.get("structure", {})
+        tech = self.analysis.get("tech_stack", {})
         dirs = structure.get("directories", [])
         entries = structure.get("entry_points", [])
         configs = structure.get("config_files", [])
-
-        dir_nodes = "\n".join(
-            f"    App --> D{i}[{self._mermaid_label(directory)}]" for i, directory in enumerate(dirs[:8], 1)
-        )
-        if not dir_nodes:
-            dir_nodes = "    App --> Files[Repository files]"
+        tests = structure.get("test_files", [])
+        key_files = self.analysis.get("key_files", [])
+        diagram = self._architecture_mermaid(dirs, entries, configs, tests, key_files, tech)
 
         return f"""## 3. Architecture Summary
 
@@ -107,11 +105,7 @@ The repository appears to start from {self._join_code(entries) if entries else "
 Configuration and runtime behavior are likely controlled by {self._join_code(configs)}.
 
 ```mermaid
-graph TD
-    Repo[{self._mermaid_label(self.analysis.get('repo_name', 'Repository'))}] --> App[Application Surface]
-{dir_nodes}
-    App --> Config[Configuration]
-    Config --> Runtime[Local / CI Runtime]
+{diagram}
 ```
 
 ### How to Read This Architecture
@@ -319,6 +313,85 @@ Use these assets with the target repository when you want Bob's full repo contex
             return "moderate"
         return "high"
 
+    def _architecture_mermaid(
+        self,
+        dirs: List[str],
+        entries: List[str],
+        configs: List[str],
+        tests: List[str],
+        key_files: List[Dict[str, Any]],
+        tech: Dict[str, Any],
+    ) -> str:
+        lines = [
+            "flowchart LR",
+            f'    Repo["{self._mermaid_label(self.analysis.get("repo_name", "Repository"))} repository"]',
+            '    Docs["README / docs"]',
+            '    Entry["Runtime entry points"]',
+            '    Source["Source and modules"]',
+            '    Tests["Executable tests"]',
+            '    Config["Configuration and scripts"]',
+            '    Runtime["Local / CI runtime"]',
+            "    Repo --> Docs",
+            "    Repo --> Entry",
+            "    Repo --> Source",
+            "    Repo --> Tests",
+            "    Repo --> Config",
+            "    Config --> Runtime",
+        ]
+
+        for index, entry in enumerate(entries[:4]):
+            lines.extend([
+                f'    E{index}["{self._mermaid_label(entry)}"]',
+                f"    Entry --> E{index}",
+                f"    E{index} --> Source",
+            ])
+
+        for index, directory in enumerate(dirs[:6]):
+            lines.extend([
+                f'    D{index}["{self._mermaid_label(directory)}"]',
+                f"    Source --> D{index}",
+            ])
+
+        for index, item in enumerate(key_files[:5]):
+            path = str(item.get("path") or "Key file")
+            purpose = str(item.get("purpose") or "important file")
+            lines.extend([
+                f'    K{index}["{self._mermaid_label(path + " - " + purpose)}"]',
+                f"    Source --> K{index}",
+            ])
+
+        for index, test in enumerate(tests[:4]):
+            lines.extend([
+                f'    T{index}["{self._mermaid_label(test)}"]',
+                f"    Tests --> T{index}",
+            ])
+
+        for index, config in enumerate(configs[:6]):
+            lines.extend([
+                f'    C{index}["{self._mermaid_label(config)}"]',
+                f"    Config --> C{index}",
+            ])
+
+        stack = [
+            *tech.get("languages", [])[:3],
+            *tech.get("frameworks", [])[:3],
+            *tech.get("package_managers", [])[:2],
+        ]
+        if stack:
+            lines.extend([
+                f'    Stack["{self._mermaid_label(" / ".join(stack))}"]',
+                "    Runtime --> Stack",
+            ])
+
+        if any(".github" in str(directory) for directory in dirs):
+            lines.extend([
+                '    CI[".github workflows / automation"]',
+                "    Config --> CI",
+                "    CI --> Runtime",
+            ])
+
+        return "\n".join(lines)
+
     @staticmethod
     def _mermaid_label(value: Any) -> str:
-        return str(value).replace("[", "(").replace("]", ")").replace('"', "'")
+        return re.sub(r"\s+", " ", str(value).replace('"', "").replace("\\", "")).strip()

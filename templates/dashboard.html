@@ -964,6 +964,97 @@ function joinList(arr,fallback='Not detected'){
   return vals.length ? esc(vals.join(', ')) : fallback;
 }
 
+function mermaidLabel(value){
+  return String(value||'').replace(/["\\]/g,'').replace(/\s+/g,' ').trim()||'Not detected';
+}
+
+function mermaidNode(id,label){
+  return `${id}["${mermaidLabel(label)}"]`;
+}
+
+function buildArchitectureMermaid(repoName,structure,tech,keyFiles){
+  const dirs=(structure.directories||structure.main_directories||[]).filter(Boolean);
+  const entries=(structure.entry_points||[]).filter(Boolean);
+  const configs=(structure.config_files||[]).filter(Boolean);
+  const tests=(structure.test_files||[]).filter(Boolean);
+  const packageManagers=(tech.package_managers||[]).filter(Boolean);
+  const frameworks=(tech.frameworks||[]).filter(Boolean);
+  const languages=(tech.languages||[]).filter(Boolean);
+  const lines=[
+    'flowchart LR',
+    `  ${mermaidNode('Repo',repoName+' repository')}`,
+    `  ${mermaidNode('Docs','README / docs')}`,
+    `  ${mermaidNode('Entry','Runtime entry points')}`,
+    `  ${mermaidNode('Source','Source and modules')}`,
+    `  ${mermaidNode('Tests','Executable tests')}`,
+    `  ${mermaidNode('Config','Configuration and scripts')}`,
+    `  ${mermaidNode('Runtime','Local / CI runtime')}`,
+    '  Repo --> Docs',
+    '  Repo --> Entry',
+    '  Repo --> Source',
+    '  Repo --> Tests',
+    '  Repo --> Config',
+    '  Config --> Runtime'
+  ];
+
+  entries.slice(0,4).forEach((entry,i)=>{
+    lines.push(`  ${mermaidNode('E'+i,entry)}`);
+    lines.push(`  Entry --> E${i}`);
+    lines.push(`  E${i} --> Source`);
+  });
+
+  dirs.slice(0,6).forEach((dir,i)=>{
+    lines.push(`  ${mermaidNode('D'+i,dir)}`);
+    lines.push(`  Source --> D${i}`);
+  });
+
+  keyFiles.slice(0,5).forEach((file,i)=>{
+    const path=file.path||file.name||'Key file';
+    const purpose=file.purpose?`${path} - ${file.purpose}`:path;
+    lines.push(`  ${mermaidNode('K'+i,purpose)}`);
+    lines.push(`  Source --> K${i}`);
+  });
+
+  tests.slice(0,4).forEach((test,i)=>{
+    lines.push(`  ${mermaidNode('T'+i,test)}`);
+    lines.push(`  Tests --> T${i}`);
+  });
+
+  configs.slice(0,6).forEach((config,i)=>{
+    lines.push(`  ${mermaidNode('C'+i,config)}`);
+    lines.push(`  Config --> C${i}`);
+  });
+
+  if(packageManagers.length || frameworks.length || languages.length){
+    lines.push(`  ${mermaidNode('Stack',[...languages.slice(0,3),...frameworks.slice(0,3),...packageManagers.slice(0,2)].join(' / '))}`);
+    lines.push('  Runtime --> Stack');
+  }
+
+  if(dirs.some(dir=>String(dir).includes('.github'))){
+    lines.push(`  ${mermaidNode('CI','.github workflows / automation')}`);
+    lines.push('  Config --> CI');
+    lines.push('  CI --> Runtime');
+  }
+
+  return lines.join('\n');
+}
+
+async function renderArchitectureDiagram(){
+  const diagram=document.getElementById('archDiagram');
+  if(!diagram || !diagram.dataset.source || activeTab!=='architecture')return;
+  diagram.textContent=diagram.dataset.source;
+  diagram.removeAttribute('data-processed');
+  try{
+    if(window.mermaid?.run){
+      await mermaid.run({nodes:[diagram]});
+    }else{
+      mermaid.init(undefined,[diagram]);
+    }
+  }catch(error){
+    diagram.innerHTML=`<pre><code>${esc(diagram.dataset.source)}</code></pre>`;
+  }
+}
+
 function render(data){
   const analysis=data.analysis||{};
   const structure=data.structure||analysis.structure||{};
@@ -1018,17 +1109,21 @@ function render(data){
   `;
 
   // ARCHITECTURE
-  const nodeLines=dirs.slice(0,8).map((d,i)=>`    App --> D${i}[${d.replace(/[\[\]"]/g,'')}]`).join('\n')||'    App --> Files[Repository files]';
+  const architectureMermaid=buildArchitectureMermaid(repoName,structure,tech,keyFiles);
   document.getElementById('content-architecture').innerHTML=`
     <h2>Architecture Summary</h2>
-    <p>The repository is organized around ${joinCode(dirs,'the following areas')}. ${entries.length?'Entry points detected: '+joinCode(entries)+'.':'No standard entry points detected automatically.'}</p>
-    <div class="mermaid" id="archDiagram">graph TD
-    Repo[${esc(repoName)}] --> App[Application Surface]
-${nodeLines}
-    App --> Config[Configuration]
-    Config --> Runtime[Runtime / CI]</div>
+    <p>This architecture diagram is generated from the real repository scan: detected entry points, source directories, key files, tests, configuration files, and runtime tooling. ${entries.length?'Entry points detected: '+joinCode(entries)+'.':'No standard entry points detected automatically.'}</p>
+    <div class="mermaid" id="archDiagram"></div>
     <h3>Configuration Files</h3>
     <p>${joinCode(configs,'No configuration files detected')}</p>
+    <h3>Detected Runtime Surface</h3>
+    <ul>
+      <li><strong>Languages:</strong> ${joinList(tech.languages)}</li>
+      <li><strong>Frameworks:</strong> ${joinList(tech.frameworks)}</li>
+      <li><strong>Package managers:</strong> ${joinList(tech.package_managers)}</li>
+      <li><strong>Build tools:</strong> ${joinList(tech.build_tools)}</li>
+      <li><strong>Tests:</strong> ${joinCode(tests.slice(0,5),'No test files detected')}</li>
+    </ul>
     <h3>How to Navigate</h3>
     <ol>
       <li>Start with the README and any detected entry point</li>
@@ -1037,9 +1132,7 @@ ${nodeLines}
       <li>Use test files as executable documentation before editing code</li>
     </ol>
   `;
-  setTimeout(()=>{
-    mermaid.init(undefined,[document.getElementById('archDiagram')]);
-  },100);
+  document.getElementById('archDiagram').dataset.source=architectureMermaid;
 
   // SETUP
   const cmds=setup.commands||[];
@@ -1181,6 +1274,9 @@ function switchTab(tab,srcEl){
   if(btn)btn.classList.add('active');
   if(srcEl)srcEl.classList.add('active');
   activeTab=tab;
+  if(tab==='architecture'){
+    setTimeout(renderArchitectureDiagram,50);
+  }
 }
 
 // CHAT

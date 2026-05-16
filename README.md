@@ -10,7 +10,7 @@ AI-powered codebase onboarding accelerator built for the [IBM Bob Hackathon](htt
 [![Mermaid](https://img.shields.io/badge/Diagrams-Mermaid-C09B3A)](https://mermaid.js.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-24A148.svg)](LICENSE)
 
-![SmartOnboard banner](docs/images/banner.png)
+![SmartOnboard banner](docs/images/smartonboard.png)
 
 ## Demo Video
 
@@ -170,6 +170,7 @@ smartonboard/
     export.html
     base.html
   docs/images/
+    smartonboard.png
     banner.png
     dashboard.png
     form.png

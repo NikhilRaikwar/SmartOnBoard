@@ -5,7 +5,8 @@ AI-powered codebase onboarding accelerator combining deterministic fact groundin
 [![OpenRouter](https://img.shields.io/badge/LLM-OpenRouter%20%7C%20AIML-00DC82)](https://openrouter.ai)
 [![RAG](https://img.shields.io/badge/RAG-AST%20%2B%20Hybrid%20RRF-7C3AED)](https://github.com/NikhilRaikwar/SmartOnBoard)
 [![Agent](https://img.shields.io/badge/Agent-Tool--Calling%20ReAct-2563EB)](https://github.com/NikhilRaikwar/SmartOnBoard)
-[![Eval](https://img.shields.io/badge/Plumbing%20Pass-100%25%20(Mock)-10B981)](evals/qa_golden.jsonl)
+[![Eval Mock](https://img.shields.io/badge/Plumbing%20Pass-100%25%20(Mock)-10B981)](evals/qa_golden.jsonl)
+[![Citation Accuracy](https://img.shields.io/badge/Citation%20Accuracy-93.3%25%20(Live%20LLM)-2563EB)](evals/qa_golden.jsonl)
 [![Architecture](https://img.shields.io/badge/Architecture-ReAct%20%2B%20RAG-0F172A)](ARCHITECTURE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -76,9 +77,9 @@ python evals/run_eval.py
 
 ### Measured Results
 
-- **Plumbing Pass (Mock Mode):** `100.0% (15/15)` — verifies full tool loop, traversal guards, and citation extraction without network calls.
-- **Baseline Deterministic Summary:** `20.0% (3/15)` — simple keyword summaries only match top-level entry files.
-- **Agent Citation Accuracy (Live LLM):** Measured live with OpenRouter Llama 3.3 70B models over multi-file queries.
+- **Plumbing Pass (Mock Mode):** `100.0% (15/15)` — verifies full tool loop, traversal guards, and citation extraction without network calls (`python evals/run_eval.py --mock`).
+- **Baseline Deterministic Summary:** `0.0% (0/15)` — simple keyword summaries without file reading do not cite ground truth implementation files.
+- **Agent Citation Accuracy (Live LLM):** `93.3% (14/15)` — measured live with Meta Llama 3.3 70B via tool-calling ReAct loop over multi-file queries (`python evals/run_eval.py`).
 
 ---
 

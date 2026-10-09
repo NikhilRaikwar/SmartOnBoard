@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}Analyzing Repository - SmartOnboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Progress bar animation */
+    @keyframes progressBar {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+    
+    .progress-bar {
+        height: 8px;
+        background: linear-gradient(90deg, #2563EB, #7C3AED);
+        border-radius: 4px;
+        animation: progressBar 30s linear forwards;
+    }
+    
+    /* Pulse animation for status items */
+    @keyframes statusPulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+    
+    .status-item.active {
+        animation: statusPulse 2s ease-in-out infinite;
+    }
+    
+    /* Checkmark animation */
+    @keyframes checkmark {
+        0% { transform: scale(0) rotate(45deg); }
+        50% { transform: scale(1.2) rotate(45deg); }
+        100% { transform: scale(1) rotate(45deg); }
+    }
+    
+    .checkmark {
+        animation: checkmark 0.3s ease-out;
+    }
+    
+    /* Spinner */
+    .analysis-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #E2E8F0;
+        border-top: 4px solid #2563EB;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 flex items-center justify-center py-12">
+    <div class="max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="soft-card p-8 md:p-12">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="analysis-spinner mx-auto mb-6"></div>
+                <h1 class="text-3xl font-bold text-text-primary mb-3">
+                    Analyzing Repository
+                </h1>
+                <p class="text-lg text-text-secondary mb-2" id="repoName">
+                    Loading repository...
+                </p>
+                <p class="text-sm text-text-secondary">
+                    Grounded facts & RAG index preparation
+                </p>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mb-8">
+                <div class="bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="flex justify-between mt-2 text-sm text-text-secondary">
+                    <span>Starting...</span>
+                    <span id="progressPercent">0%</span>
+                    <span>Complete</span>
+                </div>
+            </div>
+            
+            <!-- Analysis Steps -->
+            <div class="space-y-4">
+                <!-- Step 1 -->
+                <div class="status-item flex items-start p-4 bg-slate-50 rounded-lg" id="step-clone">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div class="spinner-small hidden"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Cloning Repository</h3>
+                        <p class="text-sm text-text-secondary">Fetching real codebase tree and manifest files...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="status-item flex items-start p-4 bg-slate-50 rounded-lg" id="step-techstack">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Deterministic Fact Extraction</h3>
+                        <p class="text-sm text-text-secondary">Extracting languages, frameworks, entry points, and test scripts...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="status-item flex items-start p-4 bg-slate-50 rounded-lg" id="step-structure">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">AST-Aware Code Chunking</h3>
+                        <p class="text-sm text-text-secondary">Parsing classes, functions, and semantic boundaries...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="status-item flex items-start p-4 bg-slate-50 rounded-lg" id="step-index">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Hybrid RAG Indexing</h3>
+                        <p class="text-sm text-text-secondary">Preparing vector embeddings and BM25/keyword indices for retrieval...</p>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="status-item flex items-start p-4 bg-slate-50 rounded-lg" id="step-content">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-text-primary mb-1">Generating Grounded Guide</h3>
+                        <p class="text-sm text-text-secondary">Synthesizing role-specific onboarding guide and Mermaid architecture...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Facts -->
+            <div class="mt-8 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                <p class="text-sm text-text-secondary">
+                    <span class="font-semibold text-primary">💡 Architecture Note:</span>
+                    <span id="funFact">Deterministic analysis guarantees zero factual hallucination on repository structure.</span>
+                </p>
+            </div>
+            
+            <!-- Cancel Button -->
+            <div class="mt-6 text-center">
+                <button onclick="cancelAnalysis()" class="text-text-secondary hover:text-danger transition-colors">
+                    Cancel Analysis
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const funFacts = [
+        "Deterministic analysis guarantees zero factual hallucination on repository structure.",
+        "AST-aware chunking groups functions and classes cleanly instead of arbitrary line boundaries.",
+        "Hybrid RAG fuses vector embeddings with keyword search via Reciprocal Rank Fusion (RRF).",
+        "The ReAct agent uses strictly read-only tools with built-in path traversal guardrails.",
+        "SmartOnboard generates role-specific views for engineers, architects, and engineering managers."
+    ];
+    
+    let currentStep = 0;
+    const steps = ['clone', 'techstack', 'structure', 'index', 'content'];
+    let factInterval;
+    
+    // Rotate facts
+    function rotateFacts() {
+        let currentFact = 0;
+        factInterval = setInterval(() => {
+            currentFact = (currentFact + 1) % funFacts.length;
+            document.getElementById('funFact').textContent = funFacts[currentFact];
+        }, 5000);
+    }
+    
+    // Simulate analysis progress
+    function simulateProgress() {
+        const stepDuration = 6000;
+        
+        function completeStep(stepIndex) {
+            if (stepIndex >= steps.length) {
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 1000);
+                return;
+            }
+            
+            const stepId = `step-${steps[stepIndex]}`;
+            const stepElement = document.getElementById(stepId);
+            if (!stepElement) return;
+            
+            stepElement.classList.add('active');
+            const iconWrap = stepElement.querySelector('.w-8');
+            if (iconWrap) {
+                iconWrap.classList.remove('bg-slate-200');
+                iconWrap.classList.add('bg-primary');
+            }
+            
+            setTimeout(() => {
+                stepElement.classList.remove('active');
+                if (iconWrap) {
+                    iconWrap.classList.remove('bg-primary');
+                    iconWrap.classList.add('bg-success');
+                }
+                const checkmark = stepElement.querySelector('.checkmark-icon');
+                if (checkmark) {
+                    checkmark.classList.remove('hidden');
+                    checkmark.classList.add('checkmark');
+                }
+                
+                const progress = ((stepIndex + 1) / steps.length) * 100;
+                const percentEl = document.getElementById('progressPercent');
+                if (percentEl) percentEl.textContent = Math.round(progress) + '%';
+                
+                completeStep(stepIndex + 1);
+            }, stepDuration);
+        }
+        
+        completeStep(0);
+    }
+    
+    function getRepoInfo() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const repoUrl = urlParams.get('repo') || sessionStorage.getItem('currentRepo') || 'Repository';
+        document.getElementById('repoName').textContent = repoUrl;
+    }
+    
+    function cancelAnalysis() {
+        if (confirm('Are you sure you want to cancel the analysis?')) {
+            window.location.href = '/';
+        }
+    }
+    
+    window.addEventListener('DOMContentLoaded', function() {
+        getRepoInfo();
+        rotateFacts();
+        simulateProgress();
+    });
+    
+    window.addEventListener('beforeunload', function() {
+        if (factInterval) {
+            clearInterval(factInterval);
+        }
+    });
+</script>
+{% endblock %}

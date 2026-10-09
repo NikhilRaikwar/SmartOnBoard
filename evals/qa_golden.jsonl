@@ -1,0 +1,15 @@
+{"repo_url": "https://github.com/sindresorhus/is", "question": "Where is the type assertion implementation?", "must_cite_any_of": ["source/index.ts", "source/index.js", "index.ts", "index.d.ts"], "mode": "agent"}
+{"repo_url": "https://github.com/sindresorhus/is", "question": "How are tests structured and run?", "must_cite_any_of": ["test/test.ts", "test/test.js", "package.json", "test.ts"], "mode": "agent"}
+{"repo_url": "https://github.com/sindresorhus/is", "question": "What is the package entry point defined in manifests?", "must_cite_any_of": ["package.json", "tsconfig.json"], "mode": "agent"}
+{"repo_url": "https://github.com/sindresorhus/is", "question": "Where are TypeScript type declarations exported?", "must_cite_any_of": ["source/index.ts", "index.d.ts", "package.json"], "mode": "agent"}
+{"repo_url": "https://github.com/sindresorhus/is", "question": "Where are predicate guards for primitives defined?", "must_cite_any_of": ["source/index.ts", "source/index.js", "index.ts"], "mode": "agent"}
+{"repo_url": "https://github.com/expressjs/express", "question": "Where is the main application factory defined?", "must_cite_any_of": ["lib/express.js", "lib/application.js", "index.js"], "mode": "agent"}
+{"repo_url": "https://github.com/expressjs/express", "question": "Where is router request dispatch logic located?", "must_cite_any_of": ["lib/router/index.js", "lib/router/route.js", "lib/router/layer.js"], "mode": "agent"}
+{"repo_url": "https://github.com/expressjs/express", "question": "Where are response formatting methods like res.json implemented?", "must_cite_any_of": ["lib/response.js", "lib/application.js"], "mode": "agent"}
+{"repo_url": "https://github.com/expressjs/express", "question": "Where is middleware mounting logic defined?", "must_cite_any_of": ["lib/application.js", "lib/router/index.js"], "mode": "agent"}
+{"repo_url": "https://github.com/expressjs/express", "question": "What test framework and test suites are used?", "must_cite_any_of": ["package.json", "test/app.js", "test/res.json.js", "test/Router.js"], "mode": "agent"}
+{"repo_url": "https://github.com/pallets/flask", "question": "Where is the core Flask application class defined?", "must_cite_any_of": ["src/flask/app.py", "flask/app.py", "src/flask/__init__.py"], "mode": "agent"}
+{"repo_url": "https://github.com/pallets/flask", "question": "Where is Blueprint routing and registration implemented?", "must_cite_any_of": ["src/flask/blueprints.py", "flask/blueprints.py", "src/flask/scaffold.py"], "mode": "agent"}
+{"repo_url": "https://github.com/pallets/flask", "question": "Where is request and session context handling defined?", "must_cite_any_of": ["src/flask/ctx.py", "flask/ctx.py", "src/flask/globals.py"], "mode": "agent"}
+{"repo_url": "https://github.com/pallets/flask", "question": "Where are CLI commands and entry points configured?", "must_cite_any_of": ["src/flask/cli.py", "flask/cli.py", "pyproject.toml"], "mode": "agent"}
+{"repo_url": "https://github.com/pallets/flask", "question": "Where are test fixtures and test cases located?", "must_cite_any_of": ["tests/test_basic.py", "tests/conftest.py", "pyproject.toml"], "mode": "agent"}

@@ -166,7 +166,7 @@ def chat_with_codebase():
 
     cached = ANALYSIS_CACHE.get(f"{repo_url}:{role}") or ANALYSIS_CACHE.get(f"{repo_url}:engineer")
     context = data.get("context") or {}
-    analysis = (cached or {}).get("analysis") or context.get("analysis") or {}
+    analysis = (cached or {}).get("analysis") or context.get("analysis") or (context if context.get("structure") else {})
     if not analysis:
         return jsonify({"status": "error", "message": "Analyze this repository before asking questions."}), 404
 
@@ -317,7 +317,7 @@ def chat_with_codebase_stream():
 
     cached = ANALYSIS_CACHE.get(f"{repo_url}:{role}") or ANALYSIS_CACHE.get(f"{repo_url}:engineer")
     context = data.get("context") or {}
-    analysis = (cached or {}).get("analysis") or context.get("analysis") or {}
+    analysis = (cached or {}).get("analysis") or context.get("analysis") or (context if context.get("structure") else {})
     if not analysis:
         return jsonify({"status": "error", "message": "Analyze this repository before asking questions."}), 404
 

@@ -59,13 +59,21 @@ IGNORE_DIRS = {
 }
 
 
+import tempfile
+
+def _get_rag_cache_root() -> Path:
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or not os.access(".", os.W_OK):
+        return Path(tempfile.gettempdir()) / ".smartonboard_cache"
+    return Path(".smartonboard_cache")
+
+
 class RAGIndex:
     """Persistent SQLite vector + keyword hybrid code index."""
 
     def __init__(self, repo_url: str, cache_root: Optional[str] = None):
         self.repo_url = repo_url
         url_hash = hashlib.sha1(repo_url.encode("utf-8")).hexdigest()
-        root = Path(cache_root or ".smartonboard_cache")
+        root = Path(cache_root) if cache_root else _get_rag_cache_root()
         self.cache_dir = root / url_hash
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.db_path = self.cache_dir / "index.db"

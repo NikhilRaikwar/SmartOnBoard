@@ -1408,7 +1408,12 @@ async function sendMsg(){
           history: chatHistory
         })
       });
-      const data = await syncRes.json();
+      let data;
+      try {
+        data = await syncRes.json();
+      } catch(parseErr) {
+        data = { status: 'error', message: 'Analysis server error occurred. Please try again.' };
+      }
       const traceBox = document.getElementById(`trace-${msgId}`);
       if (traceBox) traceBox.style.display = 'none';
       if (data.status === 'success') {
@@ -1430,7 +1435,7 @@ async function sendMsg(){
     }
   } catch(e) {
     const ansEl = document.getElementById(`ans-${msgId}`);
-    if (ansEl) ansEl.textContent = 'Network error: ' + e.message;
+    if (ansEl) ansEl.textContent = 'Network error: ' + (e.message || 'connection failed');
   }
 }
 

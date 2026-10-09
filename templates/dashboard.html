@@ -788,8 +788,8 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
       <span class="sb-item-text">First Steps</span>
     </div>
 
-    <div class="sb-section">Bob Integration</div>
-    <div class="sb-item" onclick="switchTab('bobmode',this)">
+    <div class="sb-section">Agent Integration</div>
+    <div class="sb-item" onclick="switchTab('agentmode',this)">
       <div class="sb-icon">🤖</div>
       <span class="sb-item-text">Agent Skill & MCP</span>
     </div>
@@ -869,7 +869,7 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
         <button class="tab-btn" id="tabbtn-keyfiles" onclick="switchTab('keyfiles',this)">Key Files</button>
         <button class="tab-btn" id="tabbtn-workflow" onclick="switchTab('workflow',this)">Workflow</button>
         <button class="tab-btn" id="tabbtn-firststeps" onclick="switchTab('firststeps',this)">First Steps</button>
-        <button class="tab-btn" id="tabbtn-bobmode" onclick="switchTab('bobmode',this)">Bob Mode</button>
+        <button class="tab-btn" id="tabbtn-agentmode" onclick="switchTab('agentmode',this)">Agent & MCP</button>
       </div>
 
       <!-- Tab Panes -->
@@ -906,8 +906,8 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
       <div id="pane-firststeps" class="tab-pane">
         <div class="guide-content" id="content-firststeps"><div class="empty-state"><div class="empty-icon">🚀</div><div class="empty-title">Loading...</div></div></div>
       </div>
-      <div id="pane-bobmode" class="tab-pane">
-        <div class="guide-content" id="content-bobmode"><div class="empty-state"><div class="empty-icon">🤖</div><div class="empty-title">Loading...</div></div></div>
+      <div id="pane-agentmode" class="tab-pane">
+        <div class="guide-content" id="content-agentmode"><div class="empty-state"><div class="empty-icon">🤖</div><div class="empty-title">Loading...</div></div></div>
       </div>
     </div>
 
@@ -1253,7 +1253,7 @@ function render(data){
   `;
 
   // AGENT & MCP MODE
-  document.getElementById('content-bobmode').innerHTML=`
+  document.getElementById('content-agentmode').innerHTML=`
     <h2>Agent & MCP Integration</h2>
     <p>SmartOnboard includes reusable skills and MCP server assets that make this workflow repeatable across developer toolchains.</p>
     <h3>Model Context Protocol (MCP) Server</h3>

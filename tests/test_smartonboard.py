@@ -287,7 +287,7 @@ def test_run_logged():
 def test_zero_legacy_strings():
     """Assert zero legacy strings in app code, core modules, templates, and docs."""
     root_dir = Path(__file__).resolve().parents[1]
-    ignored = {".git", "bob_sessions", "__pycache__", ".pytest_cache", ".smartonboard_cache", "tests"}
+    ignored = {".git", "__pycache__", ".pytest_cache", ".smartonboard_cache", "tests"}
     forbidden_terms = ["".join(["wat", "sonx"]), "".join(["i", "bm"])]
 
     matches = []
